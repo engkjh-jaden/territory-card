@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>온라인 구역 카드 v5</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>온라인 구역 카드 v5</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><style>
 :root{--p:#1769aa;--p2:#0f4f83;--bg:#f5f7fa;--b:#dbe2ea;--t:#1f2937;--m:#6b7280}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,sans-serif;line-height:1.55}header{background:linear-gradient(135deg,var(--p2),var(--p));color:#fff;padding:22px 16px}.wrap{max-width:980px;margin:auto;padding:0 14px}header h1{margin:0;font-size:23px}header p{margin:5px 0 0;opacity:.9;font-size:14px}main{padding:18px 0 50px}.card{background:#fff;border:1px solid var(--b);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px #00000008}h2{font-size:18px;margin:0 0 12px}h3{font-size:16px;margin:18px 0 8px}label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px}input,textarea,select{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff}textarea{min-height:82px;resize:vertical}button{border:0;border-radius:9px;padding:11px 14px;font:inherit;font-weight:700;cursor:pointer}.btn{background:var(--p);color:#fff}.btn:hover{background:var(--p2)}.secondary{background:#eef2f7;color:#26374a}.danger{background:#c62828;color:#fff}.small{padding:7px 10px;font-size:13px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{padding:11px 13px;border-radius:9px;background:#eef6ff;border:1px solid #cfe5ff;color:#164b78;margin:10px 0}.success{background:#edf8f1;border-color:#ccebd8;color:#17683c}.error{background:#fff1f1;border-color:#f0c7c7;color:#9d1c1c}.warning{background:#fff7e8;border-color:#f3dfb5;color:#855000}.hidden{display:none!important}.muted{color:var(--m);font-size:13px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e8f2fb;color:#155a8e;font-size:12px;font-weight:700}.territory{border:1px solid var(--b);border-radius:12px;padding:14px;margin:10px 0}.territory-title{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.territory-title strong{font-size:16px}.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.status-grid button{font-size:12px;background:#f1f5f9;color:#334155;border:1px solid var(--b)}.status-grid button.active{background:#1769aa;color:#fff;border-color:#1769aa}.maplink{display:inline-block;margin-top:8px;color:#1263a0;font-weight:700;text-decoration:none}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{padding:14px;border:1px solid var(--b);border-radius:12px;background:#fafcff}.stat b{display:block;font-size:25px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid var(--b);padding:9px 6px;text-align:left;vertical-align:top}th{background:#f8fafc}footer{color:#7a8491;font-size:12px;text-align:center;padding:18px}@media(max-width:650px){.row{grid-template-columns:1fr}.row3,.stats{grid-template-columns:1fr 1fr}.status-grid{grid-template-columns:1fr 1fr}header h1{font-size:20px}.card{padding:15px}}
 .tree-card{border:1px solid var(--b);border-radius:12px;padding:14px;margin:10px 0;background:#fbfdff}.tree-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.tree-head strong{font-size:15px}.mini{font-size:12px;color:var(--m)}.tag-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.tag-btn{background:#f1f5f9;border:1px solid var(--b);color:#334155;padding:8px 10px;font-size:12px}.tag-btn.active{background:#ffe5e5;border-color:#d32f2f;color:#a40000}.caution{display:inline-block;background:#ffe1e1;color:#a40000;border:1px solid #f2aaaa;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;margin:3px}.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.danger-outline{background:#fff1f1;color:#a40000;border:1px solid #f2b8b8}.admin-panel{border-top:2px solid #eef2f7;margin-top:18px;padding-top:4px}@media(max-width:650px){.form-grid{grid-template-columns:1fr}}
-</style></head><body><header><div class="wrap"><h1>온라인 구역 카드</h1><p>전도 봉사용 모바일 웹앱 · v5 · 구역·세대·현장 특이사항 관리</p></div></header><main class="wrap">
+</style></head><body><header><div class="wrap"><h1>온라인 구역 카드</h1><p>전도 봉사용 모바일 웹앱 · v6 · 구역·세대·현장 특이사항·Excel 일괄 이관</p></div></header><main class="wrap">
 <section id="configCard" class="card"><h2>처음 한 번만 연결 설정</h2><div class="notice">Supabase 정보를 입력하면 이 브라우저에만 저장됩니다. <b>service_role/secret 키는 절대 입력하지 마세요.</b></div><div class="row"><div><label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://xxxx.supabase.co"></div><div><label>Publishable / anon key</label><input id="supabaseKey" type="password" placeholder="sb_publishable_... 또는 anon key"></div></div><div class="actions"><button class="btn" id="saveConfigBtn">연결 정보 저장</button><button class="btn secondary" id="clearConfigBtn">저장 정보 삭제</button></div><div id="configMsg"></div></section>
 <section id="authCard" class="card"><h2>로그인</h2><div id="authNotice" class="notice hidden"></div><div id="loginView"><label>이메일</label><input id="loginEmail" type="email" autocomplete="email" placeholder="이메일 주소"><label>비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호"><div class="actions"><button class="btn" id="loginBtn">로그인</button><button class="btn secondary" id="showResetBtn">비밀번호를 잊으셨나요?</button></div></div>
 <div id="resetRequestView" class="hidden"><h3>비밀번호 재설정</h3><p class="muted">가입한 이메일 주소로 비밀번호 변경 링크를 보내드립니다.</p><label>이메일</label><input id="resetEmail" type="email" autocomplete="email" placeholder="가입한 이메일 주소"><div class="actions"><button class="btn" id="sendResetBtn">재설정 이메일 보내기</button><button class="btn secondary" id="backLoginBtn">로그인으로 돌아가기</button></div></div>
@@ -10,6 +10,15 @@
 <div id="loggedInView" class="hidden"><div class="topbar"><div><span class="badge" id="roleBadge">로그인됨</span> <b id="userEmail"></b></div><button class="btn danger small" id="logoutBtn">로그아웃</button></div></div></section>
 <section id="volunteerSection" class="card hidden"><div class="topbar"><h2>내가 배정받은 구역</h2><div class="actions" style="margin-top:0"><button class="btn secondary small" id="refreshVolunteerBtn">새로고침</button><button class="btn danger small" id="volunteerLogoutBtn">로그아웃</button></div></div><div id="volunteerList"></div><h3>최근 방문 기록</h3><div id="visitHistory"></div></section>
 <section id="adminSection" class="card hidden"><div class="topbar"><h2>관리자</h2><div class="actions" style="margin-top:0"><button class="btn secondary small" id="refreshAdminBtn">새로고침</button><button class="btn danger small" id="adminLogoutBtn">로그아웃</button></div></div><div class="stats"><div class="stat"><span class="muted">전체 구역</span><b id="statTerritories">0</b></div><div class="stat"><span class="muted">현재 배정</span><b id="statAssignments">0</b></div><div class="stat"><span class="muted">봉사자</span><b id="statVolunteers">0</b></div></div><h3>구역 등록</h3><div class="row"><div><label>구역 번호</label><input id="territoryNo" placeholder="예: 101"></div><div><label>구역 이름</label><input id="territoryName" placeholder="예: 대산 1구역"></div></div><label>설명 / 주소 / 참고사항</label><textarea id="territoryDesc" placeholder="구역 설명이나 지도에서 검색할 주소를 입력하세요."></textarea><div class="actions"><button class="btn" id="addTerritoryBtn">구역 등록</button></div><h3>구역 배정</h3><div class="row3"><div><label>구역</label><select id="assignTerritory"><option value="">구역 선택</option></select></div><div><label>봉사자</label><select id="assignVolunteer"><option value="">봉사자 선택</option></select></div><div><label>&nbsp;</label><button class="btn" id="assignBtn" style="width:100%">배정하기</button></div></div><h3>구역 목록</h3><div id="adminTerritories"></div><h3>현재 배정 현황</h3><div id="adminAssignments"></div>
+<div class="admin-panel">
+<h3>📥 기존 Excel 구역 데이터 일괄 이관</h3>
+<div class="notice warning"><b>기존 데이터를 삭제하지 않고 복사합니다.</b> Excel의 여러 파일과 여러 시트를 한 번에 선택할 수 있습니다. 먼저 미리보기로 구역·건물·방문 대상을 확인한 뒤 가져오세요.</div>
+<div class="form-grid"><div><label>Excel 파일</label><input id="legacyExcelFiles" type="file" accept=".xlsx,.xls,.csv" multiple></div><div><label>가져오기 옵션</label><select id="legacyImportMode"><option value="safe">안전 가져오기 — 기존 데이터는 유지</option></select></div><div><label>&nbsp;</label><button class="btn" id="previewLegacyBtn" style="width:100%">파일 분석 / 미리보기</button></div></div>
+<div id="legacyPreview" class="hidden"></div>
+<div class="actions"><button class="btn" id="runLegacyImportBtn" disabled>선택한 Excel 모두 가져오기</button></div>
+<div id="legacyImportResult"></div>
+</div>
+
 <div class="admin-panel">
 <h3>건물 · 현관 · 세대 관리</h3>
 <div class="notice">구역을 선택한 뒤 건물 → 현관/라인 → 세대 순서로 등록하세요. 기존 구역과 배정 기록은 그대로 유지됩니다.</div>
@@ -58,7 +67,7 @@
 </div>
 </div>
 </section>
-<section id="helpCard" class="card hidden"><h2>안내</h2><div class="notice warning">방문 기록에는 가능한 한 필요한 최소 정보만 입력하세요. 개인의 이름, 민감한 종교적 반응 등 불필요한 개인정보를 기록하지 않는 것을 권장합니다.</div><p class="muted">지도는 네이버 지도 검색 링크를 사용합니다. 구역 경계선(폴리곤)을 실제 지도 위에 표시하는 기능은 다음 단계에서 추가할 수 있습니다.</p></section></main><footer>온라인 구역 카드 v5 · Supabase 기반</footer>
+<section id="helpCard" class="card hidden"><h2>안내</h2><div class="notice warning">방문 기록에는 가능한 한 필요한 최소 정보만 입력하세요. 개인의 이름, 민감한 종교적 반응 등 불필요한 개인정보를 기록하지 않는 것을 권장합니다.</div><p class="muted">지도는 네이버 지도 검색 링크를 사용합니다. 구역 경계선(폴리곤)을 실제 지도 위에 표시하는 기능은 다음 단계에서 추가할 수 있습니다.</p></section></main><footer>온라인 구역 카드 v6 · Excel 일괄 이관</footer>
 <script>
 (()=>{const SITE='https://engkjh-jaden.github.io/territory-card/';const DEFAULT='https://pgqaksnioioehsysjmxj.supabase.co';let sb=null,user=null,profile=null,recovery=false;const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const notice=(txt,type='')=>{const el=$('authNotice');if(!el){console.error('authNotice 요소를 찾을 수 없습니다.');return}el.className='notice '+(type||'');el.textContent=txt||'';el.classList.toggle('hidden',!txt)};const cfgmsg=(txt,type='')=>{$('configMsg').innerHTML=txt?`<div class="notice ${type}">${esc(txt)}</div>`:''};const saved=()=>({url:localStorage.getItem('otc_supabase_url')||DEFAULT,key:localStorage.getItem('otc_supabase_key')||''});function make(){let c=saved();if(!c.key)return false;try{sb=window.supabase.createClient(c.url,c.key);return true}catch(e){cfgmsg(e.message,'error');return false}}function modes(m){const map={login:'loginView',resetRequest:'resetRequestView',changePassword:'changePasswordView',loggedIn:'loggedInView'};['loginView','resetRequestView','changePasswordView','loggedInView'].forEach(x=>{const el=$(x);if(el)el.classList.add('hidden')});const target=$(map[m]||m);if(target)target.classList.remove('hidden');else console.error('인증 화면을 찾을 수 없습니다:',m)}function statusLabel(s){return({not_visited:'미방문',visited:'방문',absent:'부재',return:'방문 거절',refused:'방문 거절'})[s]||s}function date(s){return s?new Date(s).toLocaleString('ko-KR'):''}
 async function loadProfile(u){let r=await sb.from('profiles').select('id,display_name,role').eq('id',u.id).maybeSingle();if(r.error)throw r.error;if(!r.data)throw new Error('프로필이 없습니다. 관리자에게 계정 등록을 요청하세요.');profile=r.data;$('roleBadge').textContent=profile.role==='admin'?'관리자':'봉사자';$('userEmail').textContent=u.email||''}function sections(){ $('configCard').classList.add('hidden');$('helpCard').classList.remove('hidden');$('volunteerSection').classList.remove('hidden');if(profile?.role==='admin')$('adminSection').classList.remove('hidden');else $('adminSection').classList.add('hidden')}
@@ -67,6 +76,129 @@ async function logout(){if(sb)await sb.auth.signOut();user=null;profile=null;rec
 async function changePassword(){let p1=$('newPassword').value,p2=$('newPassword2').value;if(p1.length<6)return notice('새 비밀번호는 6자 이상으로 입력하세요.','error');if(p1!==p2)return notice('두 비밀번호가 서로 다릅니다.','error');let r=await sb.auth.updateUser({password:p1});if(r.error)return notice(r.error.message,'error');recovery=false;$('newPassword').value='';$('newPassword2').value='';modes('login');notice('비밀번호가 변경되었습니다. 새 비밀번호로 로그인하세요.','success')}
 function sbt(v,l,c){return`<button data-status="${v}" class="${v===c?'active':''}">${l}</button>`}async function refreshVolunteer(){if(!user)return;let r=await sb.from('assignments').select('id,territory_id,assigned_at,status,territories(id,territory_no,name,description)').eq('user_id',user.id).eq('status','active').order('assigned_at',{ascending:false});if(r.error)return notice(r.error.message,'error');let a=r.data||[];if(!a.length){$('volunteerList').innerHTML='<p class="muted">현재 배정된 구역이 없습니다.</p>'}else{let ids=a.map(x=>x.territory_id),vr=await sb.from('visit_records').select('territory_id,status,created_at').eq('user_id',user.id).in('territory_id',ids).order('created_at',{ascending:false}),vis=vr.data||[];$('volunteerList').innerHTML=a.map(x=>{let t=x.territories||{},v=vis.find(z=>z.territory_id===t.id),st=v?.status||'not_visited',q=encodeURIComponent((t.description||t.name||t.territory_no||'').trim());return`<div class="territory" data-id="${esc(t.id)}"><div class="territory-title"><div><strong>${esc(t.territory_no)} · ${esc(t.name)}</strong><div class="muted">${esc(t.description||'설명 없음')}</div></div><span class="badge">${esc(statusLabel(st))}</span></div>${q?`<a class="maplink" target="_blank" rel="noopener" href="https://map.naver.com/p/search/${q}">네이버 지도에서 보기 ↗</a>`:''}<div class="status-grid">${sbt('not_visited','미방문',st)}${sbt('visited','방문',st)}${sbt('absent','부재',st)}${sbt('refused','방문 거절',st)}</div></div>`}).join('');document.querySelectorAll('.status-grid button').forEach(b=>b.onclick=async()=>{let id=b.closest('.territory').dataset.id,r=await sb.from('visit_records').insert({territory_id:id,user_id:user.id,status:b.dataset.status});if(r.error)return notice(r.error.message,'error');notice('방문 상태가 저장되었습니다.','success');await refreshVolunteer();await history()})}}async function history(){let r=await sb.from('visit_records').select('status,created_at,territories(territory_no,name)').eq('user_id',user.id).order('created_at',{ascending:false}).limit(20);if(r.error)return;if(!r.data?.length){$('visitHistory').innerHTML='<p class="muted">아직 방문 기록이 없습니다.</p>';return}$('visitHistory').innerHTML='<table><thead><tr><th>구역</th><th>상태</th><th>시간</th></tr></thead><tbody>'+r.data.map(v=>`<tr><td>${esc(v.territories?.territory_no)} · ${esc(v.territories?.name)}</td><td>${esc(statusLabel(v.status))}</td><td>${esc(date(v.created_at))}</td></tr>`).join('')+'</tbody></table>'}
 async function admin(){if(profile?.role!=='admin')return;let[t,a,p]=await Promise.all([sb.from('territories').select('id,territory_no,name,description,created_at').order('territory_no'),sb.from('assignments').select('id,territory_id,user_id,status,assigned_at,profiles(display_name),territories(territory_no,name)').order('assigned_at',{ascending:false}),sb.from('profiles').select('id,display_name,role').order('display_name')]);if(t.error)return notice(t.error.message,'error');if(a.error)return notice(a.error.message,'error');if(p.error)return notice(p.error.message,'error');let ts=t.data||[],as=a.data||[],vs=(p.data||[]).filter(x=>x.role==='volunteer');$('statTerritories').textContent=ts.length;$('statAssignments').textContent=as.filter(x=>x.status==='active').length;$('statVolunteers').textContent=vs.length;$('assignTerritory').innerHTML='<option value="">구역 선택</option>'+ts.map(x=>`<option value="${esc(x.id)}">${esc(x.territory_no)} · ${esc(x.name)}</option>`).join('');$('assignVolunteer').innerHTML='<option value="">봉사자 선택</option>'+vs.map(x=>`<option value="${esc(x.id)}">${esc(x.display_name||x.id)}</option>`).join('');$('adminTerritories').innerHTML=ts.length?'<table><thead><tr><th>번호</th><th>이름</th><th>설명</th></tr></thead><tbody>'+ts.map(x=>`<tr><td>${esc(x.territory_no)}</td><td>${esc(x.name)}</td><td>${esc(x.description||'')}</td></tr>`).join('')+'</tbody></table>':'<p class="muted">등록된 구역이 없습니다.</p>';$('adminAssignments').innerHTML=as.length?'<table><thead><tr><th>구역</th><th>봉사자</th><th>상태</th><th>배정일</th></tr></thead><tbody>'+as.map(x=>`<tr><td>${esc(x.territories?.territory_no)} · ${esc(x.territories?.name)}</td><td>${esc(x.profiles?.display_name||x.user_id)}</td><td>${esc(x.status)}</td><td>${esc(date(x.assigned_at))}</td></tr>`).join('')+'</tbody></table>':'<p class="muted">배정 기록이 없습니다.</p>'}
+// ===== 기존 Excel 일괄 이관 =====
+window._legacyWorkbookData=[];
+const legacyClean=v=>String(v??'').replace(/\s+/g,' ').trim();
+const legacyNorm=v=>legacyClean(v).toLowerCase();
+const legacyInt=v=>{const n=Number(String(v??'').replace(/,/g,''));return Number.isFinite(n)?n:null};
+const legacyIsFloor=v=>/^\s*\d+(?:\s*,\s*\d+)*\s*층\s*$/.test(legacyClean(v));
+const legacyLooksEntrance=v=>{const x=legacyClean(v);return !!x && !legacyIsFloor(x) && (x.includes('현관')||x.includes('라인')||x.includes('좌측')||x.includes('우측')||x.includes('입구')||x.includes('같은 집')||x.includes('시장'))};
+function legacyHeaders(rows){
+  const wanted=['신규/수정/삭제','일련번호','구분선','길이름','건물번호','층','이름/호','순서','방문/부재','거절/금지','구역형태'];
+  let hi=rows.findIndex(r=>String(r?.[0]??'').trim()==='신규/수정/삭제');
+  if(hi<0) hi=0;
+  const h=(rows[hi]||[]).map(x=>legacyClean(x));
+  const idx={}; wanted.forEach(k=>idx[k]=h.indexOf(k));
+  return {hi,idx};
+}
+function legacyParseSheet(ws,sheetName,fileName){
+  const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+  const {hi,idx}=legacyHeaders(rows);
+  const out=[];
+  for(let i=hi+1;i<rows.length;i++){
+    const r=rows[i]||[];
+    const action=legacyClean(r[idx['신규/수정/삭제']]);
+    if(!action || action==='신규/수정/삭제') continue;
+    const obj={file_name:fileName,sheet_name:sheetName,source_row:i+1,
+      action,legacy_id:legacyClean(r[idx['일련번호']]),separator:legacyInt(r[idx['구분선']]),
+      street:legacyClean(r[idx['길이름']]),building_no:legacyClean(r[idx['건물번호']]),floor:legacyClean(r[idx['층']]),
+      name_ho:legacyClean(r[idx['이름/호']]),visit_order:legacyInt(r[idx['순서']]),
+      visit_state:legacyClean(r[idx['방문/부재']]),refusal_state:legacyClean(r[idx['거절/금지']]),building_type_code:legacyInt(r[idx['구역형태']])};
+    out.push(obj);
+  }
+  return out;
+}
+function legacyTerritoryInfo(sheetName){
+  const s=legacyClean(sheetName);
+  const m=s.match(/^(.*?)[\s_-]*(\d{1,3}-\d{1,3})$/);
+  return m?{no:m[2],name:m[1].trim()||s}:{no:s,name:s};
+}
+function legacyPreviewHtml(items){
+  const rows=items.map(x=>`<tr><td>${esc(x.file_name)}</td><td>${esc(x.sheet_name)}</td><td>${x.rows.length}</td><td>${new Set(x.rows.map(r=>legacyNorm((r.street||'')+'|'+(r.building_no||'')))).size}</td><td>${x.rows.filter(r=>legacyLooksEntrance(r.floor)).length}</td><td>${x.rows.filter(r=>r.action==='D').length}</td></tr>`).join('');
+  return `<div class="notice success">총 <b>${items.length}</b>개 시트, <b>${items.reduce((a,x)=>a+x.rows.length,0)}</b>개 원본 행을 읽었습니다.</div><div style="overflow:auto"><table><thead><tr><th>파일</th><th>시트/구역</th><th>행</th><th>건물 후보</th><th>현관 후보</th><th>삭제(D)</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+async function previewLegacy(){
+  const files=[...($('legacyExcelFiles').files||[])];
+  if(!files.length)return notice('가져올 Excel 파일을 하나 이상 선택하세요.','error');
+  const all=[];
+  try{
+    for(const file of files){
+      const buf=await file.arrayBuffer();
+      const wb=XLSX.read(buf,{type:'array',cellDates:false});
+      for(const sheetName of wb.SheetNames){
+        const ws=wb.Sheets[sheetName];
+        const rows=legacyParseSheet(ws,sheetName,file.name);
+        if(rows.length) all.push({file_name:file.name,sheet_name:sheetName,rows,territory:legacyTerritoryInfo(sheetName)});
+      }
+    }
+    window._legacyWorkbookData=all;
+    $('legacyPreview').innerHTML=legacyPreviewHtml(all);$('legacyPreview').classList.remove('hidden');$('runLegacyImportBtn').disabled=!all.length;
+    $('legacyImportResult').innerHTML='';
+    notice(`Excel 분석 완료: ${all.length}개 시트를 가져올 준비가 되었습니다.`,'success');
+  }catch(e){console.error(e);notice('Excel 분석 중 오류: '+e.message,'error')}
+}
+async function legacyGetTerritory(info){
+  let q=await sb.from('territories').select('id,territory_no,name').eq('territory_no',info.no).maybeSingle();
+  if(q.error)return {error:q.error};
+  if(q.data)return {data:q.data,created:false};
+  let r=await sb.from('territories').insert({territory_no:info.no,name:info.name,description:`Excel 이관 · ${info.name}`,created_by:user.id}).select('id,territory_no,name').single();
+  return {data:r.data,created:true,error:r.error};
+}
+function legacyBuildingType(rows){
+  const numeric=rows.filter(r=>/^\s*\d{2,4}(?:호)?\s*$/.test(legacyClean(r.name_ho))).length;
+  const floors=rows.filter(r=>legacyClean(r.floor)).length;
+  if(numeric>=2 && floors>=2) return 'apartment';
+  if(rows.some(r=>legacyClean(r.name_ho).includes('펜션'))) return 'commercial';
+  return 'other';
+}
+async function legacyImportSheet(sheet, batchId){
+  const tr=await legacyGetTerritory(sheet.territory);if(tr.error)throw tr.error;
+  const tid=tr.data.id;
+  const existingB=await sb.from('buildings').select('id,legacy_key,building_name,address');if(existingB.error)throw existingB.error;
+  const existingE=await sb.from('building_entrances').select('id,building_id,legacy_key,entrance_name');if(existingE.error)throw existingE.error;
+  const existingH=await sb.from('households').select('id,building_id,entrance_id,legacy_key,household_name');if(existingH.error)throw existingH.error;
+  const bm=new Map((existingB.data||[]).map(x=>[x.legacy_key,x]));
+  const em=new Map((existingE.data||[]).map(x=>[x.legacy_key,x]));
+  const hm=new Map((existingH.data||[]).map(x=>[x.legacy_key,x]));
+  const archive=[];let imported=0,skipped=0;
+  for(const r of sheet.rows){
+    if(r.action==='D'){skipped++;archive.push({batch_id:batchId,sheet_name:sheet.sheet_name,source_row:r.source_row,legacy_id:r.legacy_id,action:r.action,raw_data:r,territory_id:tid,created_by:user.id});continue}
+    const address=[r.street,r.building_no].filter(Boolean).join(' ');
+    const bKey=`${tid}|${legacyNorm(address||'no-address-'+(r.legacy_id||r.source_row))}`;
+    let b=bm.get(bKey);
+    if(!b){
+      const sameRows=sheet.rows.filter(x=>legacyNorm([x.street,x.building_no].filter(Boolean).join(' '))===legacyNorm(address));
+      const bp={territory_id:tid,building_type:legacyBuildingType(sameRows),building_name:address||`주소 없음 · ${r.legacy_id||r.source_row}`,address:address||null,description:'기존 Excel 이관 데이터',created_by:user.id,legacy_key:bKey};
+      const br=await sb.from('buildings').insert(bp).select('id,legacy_key,building_name,address').single();
+      if(br.error)throw br.error;b=br.data;bm.set(bKey,b);
+    }
+    let e=null;const floor=legacyClean(r.floor);
+    if(legacyLooksEntrance(floor)){
+      const eKey=`${b.id}|${legacyNorm(floor)}`;e=em.get(eKey);
+      if(!e){const er=await sb.from('building_entrances').insert({building_id:b.id,entrance_name:floor,entrance_order:r.visit_order||0,description:'Excel 이관 · 현관/구역 표기',legacy_key:eKey}).select('id,building_id,legacy_key,entrance_name').single();if(er.error)throw er.error;e=er.data;em.set(eKey,e)}
+    }
+    const hKey=`${sheet.file_name}|${sheet.sheet_name}|${r.legacy_id||r.source_row}`;
+    let h=hm.get(hKey);
+    const hName=r.name_ho||`방문 대상 ${r.visit_order||r.source_row}`;
+    const hp={building_id:b.id,entrance_id:e?.id||null,household_name:hName,address:address||null,visit_order:r.visit_order||0,description:[floor&&!legacyLooksEntrance(floor)?floor:null,r.refusal_state?`기존 거절/금지: ${r.refusal_state}`:null,r.visit_state?`기존 방문/부재: ${r.visit_state}`:null].filter(Boolean).join(' · ')||null,legacy_key:hKey};
+    if(!h){const hr=await sb.from('households').insert(hp).select('id,building_id,entrance_id,legacy_key,household_name').single();if(hr.error)throw hr.error;h=hr.data;hm.set(hKey,h)}
+    archive.push({batch_id:batchId,sheet_name:sheet.sheet_name,source_row:r.source_row,legacy_id:r.legacy_id,action:r.action,raw_data:r,territory_id:tid,building_id:b.id,entrance_id:e?.id||null,household_id:h.id,created_by:user.id});imported++;
+  }
+  for(let i=0;i<archive.length;i+=100){const ar=await sb.from('legacy_import_rows').insert(archive.slice(i,i+100));if(ar.error)throw ar.error}
+  return {sheet:sheet.sheet_name,rows:sheet.rows.length,imported,skipped,territory:sheet.territory,created:tr.created};
+}
+async function runLegacyImport(){
+  const sheets=window._legacyWorkbookData||[];if(!sheets.length)return notice('먼저 Excel 파일을 분석하세요.','error');
+  $('runLegacyImportBtn').disabled=true;$('legacyImportResult').innerHTML='<div class="notice">가져오는 중입니다. 파일 수와 행 수에 따라 잠시 걸릴 수 있습니다.</div>';
+  try{
+    let totalRows=0,totalImported=0,totalSkipped=0;const results=[];
+    for(const s of sheets){const b=await sb.from('legacy_import_batches').insert({file_name:s.file_name,sheet_count:1,row_count:s.rows.length,created_by:user.id}).select('id').single();if(b.error)throw b.error;const x=await legacyImportSheet(s,b.data.id);results.push(x);totalRows+=x.rows;totalImported+=x.imported;totalSkipped+=x.skipped;await sb.from('legacy_import_batches').update({sheet_count:1,row_count:x.rows,imported_count:x.imported,skipped_count:x.skipped}).eq('id',b.data.id)}
+    $('legacyImportResult').innerHTML=`<div class="notice success"><b>이관 완료</b><br>원본 행 ${totalRows}건 · 신규/처리 ${totalImported}건 · 삭제(D) 제외 ${totalSkipped}건</div><table><thead><tr><th>구역</th><th>행</th><th>처리</th><th>D 제외</th></tr></thead><tbody>${results.map(x=>`<tr><td>${esc(x.territory.no)} · ${esc(x.territory.name)}</td><td>${x.rows}</td><td>${x.imported}</td><td>${x.skipped}</td></tr>`).join('')}</tbody></table>`;
+    notice('기존 Excel 데이터를 새 구역 구조로 이관했습니다.','success');await admin();await loadStructure();
+  }catch(e){console.error(e);$('legacyImportResult').innerHTML=`<div class="notice error">이관 중 오류: ${esc(e.message||e)}</div>`;notice('이관 중 오류가 발생했습니다.','error')}
+  finally{$('runLegacyImportBtn').disabled=false}
+}
+
 async function addTerritory(){let n=$('territoryNo').value.trim(),name=$('territoryName').value.trim(),d=$('territoryDesc').value.trim();if(!n||!name)return notice('구역 번호와 구역 이름을 입력하세요.','error');let r=await sb.from('territories').insert({territory_no:n,name,description:d,created_by:user.id});if(r.error)return notice(r.error.message,'error');$('territoryNo').value='';$('territoryName').value='';$('territoryDesc').value='';notice('구역이 등록되었습니다.','success');await admin()}async function assign(){let t=$('assignTerritory').value,v=$('assignVolunteer').value;if(!t||!v)return notice('구역과 봉사자를 모두 선택하세요.','error');let r=await sb.from('assignments').insert({territory_id:t,user_id:v,assigned_by:user.id,status:'active'});if(r.error)return notice(r.error.message,'error');notice('구역을 배정했습니다.','success');await admin()}async function loadStructure(){
  if(profile?.role!=='admin')return;
  let tr=await sb.from('territories').select('id,territory_no,name').order('territory_no');
@@ -162,6 +294,6 @@ async function addFieldNote(){
  notice('현장 특이사항이 저장되었습니다.','success');await loadFieldNotes();
 }
 async function refreshAll(){await refreshVolunteer();await history();if(profile?.role==='admin'){await admin();await loadStructure()}}
-$('saveConfigBtn').onclick=()=>{let u=$('supabaseUrl').value.trim().replace(/\/+$/,''),k=$('supabaseKey').value.trim();if(!u||!k)return cfgmsg('Supabase URL과 Publishable/anon key를 모두 입력하세요.','error');if(/service_role|secret/i.test(k))return cfgmsg('service_role/secret 키는 사용할 수 없습니다. Publishable/anon key를 입력하세요.','error');localStorage.setItem('otc_supabase_url',u);localStorage.setItem('otc_supabase_key',k);if(make()){modes('login');cfgmsg('연결 정보 저장 완료.','success')}};$('clearConfigBtn').onclick=()=>{localStorage.removeItem('otc_supabase_url');localStorage.removeItem('otc_supabase_key');location.reload()};$('loginBtn').onclick=login;$('loginPassword').onkeydown=e=>{if(e.key==='Enter')login()};$('showResetBtn').onclick=()=>{$('resetEmail').value=$('loginEmail').value.trim();modes('resetRequest');};$('backLoginBtn').onclick=()=>modes('login');$('sendResetBtn').onclick=resetRequest;$('changePasswordBtn').onclick=changePassword;$('cancelResetBtn').onclick=()=>{recovery=false;modes('login')};$('logoutBtn').onclick=logout;$('volunteerLogoutBtn').onclick=logout;$('adminLogoutBtn').onclick=logout;$('refreshVolunteerBtn').onclick=refreshVolunteer;$('refreshAdminBtn').onclick=admin;$('addTerritoryBtn').onclick=addTerritory;$('assignBtn').onclick=assign;$('addBuildingBtn').onclick=addBuilding;$('addEntranceBtn').onclick=addEntrance;$('addHouseholdBtn').onclick=addHousehold;$('addFieldNoteBtn').onclick=addFieldNote;document.querySelectorAll('.tag-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tag-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
+$('saveConfigBtn').onclick=()=>{let u=$('supabaseUrl').value.trim().replace(/\/+$/,''),k=$('supabaseKey').value.trim();if(!u||!k)return cfgmsg('Supabase URL과 Publishable/anon key를 모두 입력하세요.','error');if(/service_role|secret/i.test(k))return cfgmsg('service_role/secret 키는 사용할 수 없습니다. Publishable/anon key를 입력하세요.','error');localStorage.setItem('otc_supabase_url',u);localStorage.setItem('otc_supabase_key',k);if(make()){modes('login');cfgmsg('연결 정보 저장 완료.','success')}};$('clearConfigBtn').onclick=()=>{localStorage.removeItem('otc_supabase_url');localStorage.removeItem('otc_supabase_key');location.reload()};$('loginBtn').onclick=login;$('loginPassword').onkeydown=e=>{if(e.key==='Enter')login()};$('showResetBtn').onclick=()=>{$('resetEmail').value=$('loginEmail').value.trim();modes('resetRequest');};$('backLoginBtn').onclick=()=>modes('login');$('sendResetBtn').onclick=resetRequest;$('changePasswordBtn').onclick=changePassword;$('cancelResetBtn').onclick=()=>{recovery=false;modes('login')};$('logoutBtn').onclick=logout;$('volunteerLogoutBtn').onclick=logout;$('adminLogoutBtn').onclick=logout;$('refreshVolunteerBtn').onclick=refreshVolunteer;$('refreshAdminBtn').onclick=admin;$('addTerritoryBtn').onclick=addTerritory;$('assignBtn').onclick=assign;$('addBuildingBtn').onclick=addBuilding;$('addEntranceBtn').onclick=addEntrance;$('addHouseholdBtn').onclick=addHousehold;$('addFieldNoteBtn').onclick=addFieldNote;$('previewLegacyBtn').onclick=previewLegacy;$('runLegacyImportBtn').onclick=runLegacyImport;document.querySelectorAll('.tag-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tag-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
 async function init(){let c=saved();$('supabaseUrl').value=c.url;$('supabaseKey').value=c.key;if(!make()){modes('login');return}sb.auth.onAuthStateChange(async(e,s)=>{if(e==='PASSWORD_RECOVERY'){recovery=true;modes('changePassword');notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');return}if(e==='SIGNED_OUT'){user=null;profile=null;return}if(s?.user&&!recovery){user=s.user;try{await loadProfile(user);modes('loggedIn');sections();await refreshAll()}catch(x){notice(x.message,'error')}}});let r=await sb.auth.getSession();if(r.data.session?.user&&!recovery){user=r.data.session.user;try{await loadProfile(user);modes('loggedIn');sections();await refreshAll()}catch(x){notice(x.message,'error')}}const h=location.hash;if(h.includes('error=')){let p=new URLSearchParams(h.substring(1));notice(p.get('error_description')||p.get('error')||'인증 처리 중 오류가 발생했습니다.','error')}}init()})();
 </script></body></html>

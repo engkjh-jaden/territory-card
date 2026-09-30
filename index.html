@@ -1,0 +1,68 @@
+<!doctype html><html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#176b55"><title>온라인 구역 카드</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--p:#176b55;--bg:#f3f6f5;--line:#dbe5e1;--text:#18332c;--muted:#687a74;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
+header{background:var(--p);color:#fff;padding:16px}main{max-width:850px;margin:auto;padding:12px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+h2{font-size:17px;margin:0 0 12px}.sub,.msg{font-size:13px;color:var(--muted);line-height:1.55}label{display:block;font-size:12px;color:var(--muted);margin:10px 0 5px}
+input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit}
+button{font:inherit;border:0;border-radius:10px;padding:11px 13px;background:var(--p);color:#fff;font-weight:700;cursor:pointer}.alt{background:#e9f2ee;color:var(--p)}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.fit{flex:0 0 auto}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#eef5f1;border-radius:12px;padding:12px;text-align:center}.stat b{display:block;font-size:22px;color:var(--p)}.stat span{font-size:11px;color:var(--muted)}
+.tabs{display:flex;gap:6px;overflow:auto;margin-bottom:12px}.tab{background:#fff;color:var(--text);border:1px solid var(--line);white-space:nowrap}.tab.active{background:var(--p);color:#fff}.item{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}.item h3{font-size:15px;margin:0 0 5px}.hidden{display:none!important}.msg{background:#f1f5f3;padding:10px;border-radius:10px;margin-top:10px}.error{background:#fff0ef;color:var(--red)}
+@media(max-width:600px){.row{flex-direction:column;align-items:stretch}.row .fit{width:100%}.grid{grid-template-columns:repeat(3,1fr)}}
+</style></head><body>
+<header><b>온라인 구역 카드</b><br><small>전도 봉사용 모바일 웹앱</small></header><main>
+
+<section id="setup" class="card"><h2>최초 연결 설정</h2>
+<div class="sub">Supabase Project URL과 Publishable/anon 공개 키를 입력합니다. service_role/secret 키는 절대 입력하지 마세요.</div>
+<label>Project URL</label><input id="url" placeholder="https://xxxx.supabase.co">
+<label>Publishable / anon public key</label><input id="key" placeholder="sb_publishable_...">
+<div class="row"><button onclick="save()">연결 저장</button><button class="alt" onclick="clearCfg()">설정 삭제</button></div><div id="setupMsg" class="msg"></div></section>
+
+<section id="auth" class="card"><h2>로그인</h2><label>이메일</label><input id="email" type="email">
+<label>비밀번호</label><input id="pw" type="password"><button onclick="login()">로그인</button>
+<div id="authMsg" class="msg">승인된 사용자만 로그인할 수 있습니다.</div></section>
+
+<section id="app" class="hidden"><div class="tabs">
+<button id="tabHome" class="tab active" onclick="tab('home')">내 구역</button>
+<button id="tabHist" class="tab" onclick="tab('hist')">내 기록</button>
+<button id="tabAdmin" class="tab hidden" onclick="tab('admin')">관리자</button></div>
+
+<div id="home"><section class="card"><div class="row"><div><h2>내 구역</h2><div id="who" class="sub"></div></div><button class="alt fit" onclick="loadMine()">새로고침</button></div><div id="mine"></div></section></div>
+<div id="hist" class="hidden"><section class="card"><h2>최근 방문 기록</h2><div id="history"></div></section></div>
+<div id="admin" class="hidden">
+<section class="card"><h2>관리자 대시보드</h2><div class="grid"><div class="stat"><b id="nT">0</b><span>전체 구역</span></div><div class="stat"><b id="nA">0</b><span>배정 구역</span></div><div class="stat"><b id="nU">0</b><span>봉사자</span></div></div></section>
+<section class="card"><h2>구역 등록</h2><label>구역 번호</label><input id="no" placeholder="D-001"><label>구역 이름</label><input id="name" placeholder="대산 제1구역"><label>설명/일반 위치</label><input id="desc" placeholder="예: ○○아파트 1~3동"><button onclick="addTerritory()">구역 등록</button><div id="adminMsg" class="msg"></div></section>
+<section class="card"><h2>구역 배정</h2><label>구역</label><select id="tsel"></select><label>봉사자</label><select id="usel"></select><button onclick="assign()">선택한 봉사자에게 배정</button><div id="assignMsg" class="msg"></div></section>
+<section class="card"><h2>구역 목록</h2><div id="all"></div></section>
+</div></section>
+<footer class="sub">방문 기록은 필요한 최소한으로만 사용하고 이름, 종교적 반응 등 민감한 정보는 기록하지 않는 것을 권장합니다.</footer>
+</main>
+
+<script>
+let sb,user,admin=false;
+const $=x=>document.getElementById(x), esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function init(){let u=localStorage.otc_url,k=localStorage.otc_key;if(u&&k){$('url').value=u;$('key').value=k;sb=supabase.createClient(u,k);$('setupMsg').textContent='연결 준비 완료.'}}
+function save(){let u=$('url').value.trim(),k=$('key').value.trim();if(!u||!k)return;$('url').value=u;localStorage.otc_url=u;localStorage.otc_key=k;init();$('setupMsg').textContent='연결 정보 저장 완료.'}
+function clearCfg(){localStorage.removeItem('otc_url');localStorage.removeItem('otc_key');location.reload()}
+async function login(){if(!sb){$('authMsg').className='msg error';$('authMsg').textContent='먼저 연결 설정을 저장하세요.';return}
+let r=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('pw').value});if(r.error){$('authMsg').className='msg error';$('authMsg').textContent=r.error.message;return}
+user=r.data.user;let p=await sb.from('profiles').select('display_name,role').eq('id',user.id).maybeSingle();if(p.error||!p.data){$('authMsg').className='msg error';$('authMsg').textContent='프로필이 없습니다.';return}
+admin=p.data.role==='admin';$('setup').classList.add('hidden');$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('who').textContent=(p.data.display_name||user.email)+'님';if(admin)$('tabAdmin').classList.remove('hidden');await loadMine();await loadHistory();if(admin)await loadAdmin()}
+async function loadMine(){let r=await sb.from('assignments').select('id,territories(id,territory_no,name,description)').eq('user_id',user.id).eq('status','active');if(r.error){$('mine').innerHTML='<div class="msg error">'+esc(r.error.message)+'</div>';return}if(!r.data.length){$('mine').innerHTML='<div class="msg">현재 배정된 구역이 없습니다.</div>';return}
+$('mine').innerHTML='';r.data.forEach(a=>{let t=a.territories,d=document.createElement('div');d.className='item';d.innerHTML='<h3>'+esc(t.territory_no)+' · '+esc(t.name)+'</h3><div class="sub">'+esc(t.description||'')+'</div>';
+let map=document.createElement('button');map.className='alt';map.textContent='네이버 지도에서 위치 열기';map.onclick=()=>open('https://map.naver.com/p/search/'+encodeURIComponent((t.name||'')+' '+(t.description||'')));d.appendChild(map);
+let s=document.createElement('select');[['not_visited','미방문'],['visited','방문 완료'],['absent','부재'],['return','재방문 필요']].forEach(x=>{let o=document.createElement('option');o.value=x[0];o.textContent=x[1];s.appendChild(o)});d.appendChild(s);
+let b=document.createElement('button');b.textContent='방문 상태 저장';b.onclick=()=>saveVisit(t.id,s.value);d.appendChild(b);$('mine').appendChild(d)})}
+async function saveVisit(tid,status){let r=await sb.from('visit_records').insert({territory_id:tid,user_id:user.id,status});$('authMsg').className='msg '+(r.error?'error':'');$('authMsg').textContent=r.error?'저장 실패: '+r.error.message:'방문 상태가 저장되었습니다.';if(!r.error)loadHistory()}
+async function loadHistory(){let r=await sb.from('visit_records').select('status,created_at,territories(territory_no,name)').eq('user_id',user.id).order('created_at',{ascending:false}).limit(30);let lab={not_visited:'미방문',visited:'방문 완료',absent:'부재',return:'재방문 필요'};if(r.error){$('history').innerHTML='<div class="msg error">'+esc(r.error.message)+'</div>';return}$('history').innerHTML=r.data.length?r.data.map(x=>'<div class="item"><b>'+esc(x.territories?.territory_no||'')+' · '+esc(x.territories?.name||'')+'</b><div class="sub">'+lab[x.status]+' · '+new Date(x.created_at).toLocaleString('ko-KR')+'</div></div>').join(''):'<div class="msg">아직 기록이 없습니다.</div>'}
+async function loadAdmin(){let [t,u,a]=await Promise.all([sb.from('territories').select('*').order('territory_no'),sb.from('profiles').select('id,display_name,role').order('display_name'),sb.from('assignments').select('territory_id,user_id,profiles(display_name),territories(territory_no,name)').eq('status','active')]);if(t.error||u.error||a.error){$('adminMsg').className='msg error';$('adminMsg').textContent=(t.error||u.error||a.error).message;return}
+$('nT').textContent=t.data.length;$('nA').textContent=a.data.length;$('nU').textContent=u.data.filter(x=>x.role==='volunteer').length;$('tsel').innerHTML=t.data.map(x=>'<option value="'+x.id+'">'+esc(x.territory_no)+' · '+esc(x.name)+'</option>').join('');$('usel').innerHTML=u.data.filter(x=>x.role==='volunteer').map(x=>'<option value="'+x.id+'">'+esc(x.display_name||x.id.slice(0,8))+'</option>').join('');
+$('all').innerHTML=t.data.length?t.data.map(x=>{let z=a.data.find(y=>y.territory_id===x.id);return '<div class="item"><b>'+esc(x.territory_no)+' · '+esc(x.name)+'</b><div class="sub">'+esc(x.description||'')+'<br>배정: '+esc(z?.profiles?.display_name||'미배정')+'</div></div>'}).join(''):'<div class="msg">등록된 구역이 없습니다.</div>'}
+async function addTerritory(){let p={territory_no:$('no').value.trim(),name:$('name').value.trim(),description:$('desc').value.trim(),created_by:user.id};if(!p.territory_no||!p.name){$('adminMsg').className='msg error';$('adminMsg').textContent='구역 번호와 이름을 입력하세요.';return}let r=await sb.from('territories').insert(p);$('adminMsg').className='msg '+(r.error?'error':'');$('adminMsg').textContent=r.error?'등록 실패: '+r.error.message:'구역 등록 완료';if(!r.error){$('no').value='';$('name').value='';$('desc').value='';loadAdmin()}}
+async function assign(){let tid=$('tsel').value,uid=$('usel').value;if(!tid||!uid)return;let q=await sb.from('assignments').select('id').eq('territory_id',tid).eq('status','active').limit(1);if(q.data?.length){$('assignMsg').className='msg error';$('assignMsg').textContent='이미 배정된 구역입니다.';return}let r=await sb.from('assignments').insert({territory_id:tid,user_id:uid,assigned_by:user.id,status:'active'});$('assignMsg').className='msg '+(r.error?'error':'');$('assignMsg').textContent=r.error?'배정 실패: '+r.error.message:'구역 배정 완료';if(!r.error)loadAdmin()}
+function tab(x){['home','hist','admin'].forEach(y=>{$(y).classList.toggle('hidden',y!==x)});$('tabHome').classList.toggle('active',x==='home');$('tabHist').classList.toggle('active',x==='hist');$('tabAdmin').classList.toggle('active',x==='admin');if(x==='admin'&&admin)loadAdmin()}
+init();
+</script></body></html>

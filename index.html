@@ -6,7 +6,6 @@
 <section id="configCard" class="card"><h2>처음 한 번만 연결 설정</h2><div class="notice">Supabase 정보를 입력하면 이 브라우저에만 저장됩니다. <b>service_role/secret 키는 절대 입력하지 마세요.</b></div><div class="row"><div><label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://xxxx.supabase.co"></div><div><label>Publishable / anon key</label><input id="supabaseKey" type="password" placeholder="sb_publishable_... 또는 anon key"></div></div><div class="actions"><button class="btn" id="saveConfigBtn">연결 정보 저장</button><button class="btn secondary" id="clearConfigBtn">저장 정보 삭제</button></div><div id="configMsg"></div></section>
 <section id="authCard" class="card"><h2>로그인</h2><div id="authNotice" class="notice hidden"></div><div id="loginView"><label>이메일</label><input id="loginEmail" type="email" autocomplete="email" placeholder="이메일 주소"><label>비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호"><div class="actions"><button class="btn" id="loginBtn">로그인</button><button class="btn secondary" id="showResetBtn">비밀번호를 잊으셨나요?</button></div></div>
 <div id="resetRequestView" class="hidden"><h3>비밀번호 재설정</h3><p class="muted">가입한 이메일 주소로 비밀번호 변경 링크를 보내드립니다.</p><label>이메일</label><input id="resetEmail" type="email" autocomplete="email" placeholder="가입한 이메일 주소"><div class="actions"><button class="btn" id="sendResetBtn">재설정 이메일 보내기</button><button class="btn secondary" id="backLoginBtn">로그인으로 돌아가기</button></div></div>
-<div id="recoveryConfirmView" class="hidden"><h3>비밀번호 재설정</h3><p class="muted">아래 버튼을 눌러 본인 확인을 계속하세요. 이 버튼은 한 번만 누르면 됩니다.</p><div class="actions"><button class="btn" id="continueRecoveryBtn">비밀번호 재설정 계속</button><button class="btn secondary" id="cancelRecoveryBtn">취소</button></div></div>
 <div id="changePasswordView" class="hidden"><h3>새 비밀번호 설정</h3><div class="notice success">비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.</div><label>새 비밀번호</label><input id="newPassword" type="password" autocomplete="new-password" placeholder="새 비밀번호"><label>새 비밀번호 확인</label><input id="newPassword2" type="password" autocomplete="new-password" placeholder="새 비밀번호를 한 번 더 입력"><div class="actions"><button class="btn" id="changePasswordBtn">비밀번호 변경</button><button class="btn secondary" id="cancelResetBtn">취소</button></div></div>
 <div id="loggedInView" class="hidden"><div class="topbar"><div><span class="badge" id="roleBadge">로그인됨</span> <b id="userEmail"></b></div><button class="btn danger small" id="logoutBtn">로그아웃</button></div></div></section>
 <section id="volunteerSection" class="card hidden"><div class="topbar"><h2>오늘의 공동 봉사 구역</h2><div class="actions" style="margin-top:0"><button class="btn secondary small" id="refreshVolunteerBtn">새로고침</button><button class="btn danger small" id="volunteerLogoutBtn">로그아웃</button></div></div><div class="notice">한 구역에 여러 봉사자가 함께 참여할 수 있습니다. 각자의 휴대전화에서 입력하면 같은 구역을 보고 있는 봉사자 화면에 최신 상태가 반영됩니다.</div><div id="openTerritoryList"></div><div id="joinedTerritoryList"></div><div id="collabHouseholds"></div><h3>최근 방문 기록</h3><div id="visitHistory"></div></section>
@@ -70,7 +69,7 @@
 </section>
 <section id="helpCard" class="card hidden"><h2>안내</h2><div class="notice warning">방문 기록에는 가능한 한 필요한 최소 정보만 입력하세요. 개인의 이름, 민감한 종교적 반응 등 불필요한 개인정보를 기록하지 않는 것을 권장합니다.</div><p class="muted">지도는 네이버 지도 검색 링크를 사용합니다. 구역 경계선(폴리곤)을 실제 지도 위에 표시하는 기능은 다음 단계에서 추가할 수 있습니다.</p></section></main><footer>온라인 구역 카드 v11 · 공동 참여 · 실시간 동기화</footer>
 <script>
-(()=>{const SITE='https://engkjh-jaden.github.io/territory-card/';const DEFAULT='https://pgqaksnioioehsysjmxj.supabase.co';const DEFAULT_KEY='sb_publishable_Jthe6DTLwGj4WlrYIV97Gw_SSHuboDc';let sb=null,user=null,profile=null,recovery=false;const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const notice=(txt,type='')=>{const el=$('authNotice');if(!el){console.error('authNotice 요소를 찾을 수 없습니다.');return}el.className='notice '+(type||'');el.textContent=txt||'';el.classList.toggle('hidden',!txt)};const cfgmsg=(txt,type='')=>{$('configMsg').innerHTML=txt?`<div class="notice ${type}">${esc(txt)}</div>`:''};const saved=()=>({url:localStorage.getItem('otc_supabase_url')||DEFAULT,key:localStorage.getItem('otc_supabase_key')||DEFAULT_KEY});function make(){let c=saved();if(!c.key)return false;try{sb=window.supabase.createClient(c.url,c.key,{auth:{flowType:'implicit',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});return true}catch(e){cfgmsg(e.message,'error');return false}}function modes(m){const map={login:'loginView',resetRequest:'resetRequestView',changePassword:'changePasswordView',recoveryConfirm:'recoveryConfirmView',loggedIn:'loggedInView'};['loginView','resetRequestView','changePasswordView','recoveryConfirmView','loggedInView'].forEach(x=>{const el=$(x);if(el)el.classList.add('hidden')});const target=$(map[m]||m);if(target)target.classList.remove('hidden');else console.error('인증 화면을 찾을 수 없습니다:',m)}function statusLabel(s){return({not_visited:'미방문',visited:'방문',absent:'부재',return:'방문 거절',refused:'방문 거절'})[s]||s}function date(s){return s?new Date(s).toLocaleString('ko-KR'):''}
+(()=>{const SITE='https://engkjh-jaden.github.io/territory-card/';const DEFAULT='https://pgqaksnioioehsysjmxj.supabase.co';const DEFAULT_KEY='sb_publishable_Jthe6DTLwGj4WlrYIV97Gw_SSHuboDc';let sb=null,user=null,profile=null,recovery=false;const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const notice=(txt,type='')=>{const el=$('authNotice');if(!el){console.error('authNotice 요소를 찾을 수 없습니다.');return}el.className='notice '+(type||'');el.textContent=txt||'';el.classList.toggle('hidden',!txt)};const cfgmsg=(txt,type='')=>{$('configMsg').innerHTML=txt?`<div class="notice ${type}">${esc(txt)}</div>`:''};const saved=()=>({url:localStorage.getItem('otc_supabase_url')||DEFAULT,key:localStorage.getItem('otc_supabase_key')||DEFAULT_KEY});function make(){let c=saved();if(!c.key)return false;try{sb=window.supabase.createClient(c.url,c.key,{auth:{flowType:'implicit',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});return true}catch(e){cfgmsg(e.message,'error');return false}}function modes(m){const map={login:'loginView',resetRequest:'resetRequestView',changePassword:'changePasswordView',loggedIn:'loggedInView'};['loginView','resetRequestView','changePasswordView','loggedInView'].forEach(x=>{const el=$(x);if(el)el.classList.add('hidden')});const target=$(map[m]||m);if(target)target.classList.remove('hidden');else console.error('인증 화면을 찾을 수 없습니다:',m)}function statusLabel(s){return({not_visited:'미방문',visited:'방문',absent:'부재',return:'방문 거절',refused:'방문 거절'})[s]||s}function date(s){return s?new Date(s).toLocaleString('ko-KR'):''}
 async function loadProfile(u){let r=await sb.from('profiles').select('id,display_name,role').eq('id',u.id).maybeSingle();if(r.error)throw r.error;if(!r.data)throw new Error('프로필이 없습니다. 관리자에게 계정 등록을 요청하세요.');profile=r.data;$('roleBadge').textContent=profile.role==='admin'?'관리자':'봉사자';$('userEmail').textContent=u.email||''}function sections(){ $('configCard').classList.add('hidden');$('helpCard').classList.remove('hidden');$('volunteerSection').classList.remove('hidden');if(profile?.role==='admin')$('adminSection').classList.remove('hidden');else $('adminSection').classList.add('hidden')}
 async function login(){if(!sb&&!make())return;let email=$('loginEmail').value.trim(),password=$('loginPassword').value;if(!email||!password)return notice('이메일과 비밀번호를 입력하세요.','error');notice('로그인 중...');let r=await sb.auth.signInWithPassword({email,password});if(r.error)return notice(r.error.message,'error');user=r.data.user;try{await loadProfile(user);modes('loggedIn');sections();await refreshAll();notice('로그인되었습니다.','success')}catch(e){await sb.auth.signOut();user=null;profile=null;notice(e.message,'error')}}
 async function logout(){if(sb)await sb.auth.signOut();user=null;profile=null;recovery=false;$('adminSection').classList.add('hidden');$('volunteerSection').classList.add('hidden');$('helpCard').classList.add('hidden');$('configCard').classList.remove('hidden');modes('login');notice('로그아웃되었습니다.')}async function resetRequest(){if(!sb&&!make())return;let email=$('resetEmail').value.trim();if(!email)return notice('가입한 이메일 주소를 입력하세요.','error');notice('재설정 이메일을 보내는 중...');let redirectTo=SITE;let r=await sb.auth.resetPasswordForEmail(email,{redirectTo});if(r.error)return notice(friendly(r.error),'error');notice('재설정 이메일을 보냈습니다. 가장 최근에 받은 메일의 링크(버튼)를 한 번만 누르세요. 메일을 여러 번 요청했다면 이전 메일은 사용할 수 없습니다.','success')}
@@ -347,79 +346,105 @@ async function init(){
  $('supabaseUrl').value=c.url;
  $('supabaseKey').value=c.key;
  if(!make()){modes('login');return}
+
+ /*
+  * 비밀번호 재설정은 Supabase의 표준 PASSWORD_RECOVERY 흐름만 사용합니다.
+  * v11에서 사용하던 수동 OTP 처리와 중간 확인 화면은
+  * 기본 Supabase Reset Password 메일(ConfirmationURL)과 중복되어 오류를 만들 수 있어 제거했습니다.
+  * 현재 앱은 client-only GitHub Pages이므로 implicit flow를 그대로 사용합니다.
+  */
  const hash=location.hash||'', search=location.search||'';
  const hp=new URLSearchParams(hash.replace(/^#/,'').replace(/^&/,''));
  const qp=new URLSearchParams(search);
- const tokenHash=qp.get('token_hash'), qType=qp.get('type');
- const cleanUrl=()=>{try{history.replaceState(null,'',location.pathname)}catch(_){}};
+ const hashType=hp.get('type'), queryType=qp.get('type');
+ const isRecoveryLink=hashType==='recovery'||queryType==='recovery';
+ const hasAuthError=!!(hp.get('error')||hp.get('error_code')||qp.get('error')||qp.get('error_code'));
+ const errorCode=hp.get('error_code')||qp.get('error_code')||'';
+ const errorDescription=hp.get('error_description')||qp.get('error_description')||'';
+ const cleanUrl=()=>{try{history.replaceState(null,'',location.pathname)}catch(_){} };
  const waitForSession=async()=>{
-   for(let i=0;i<25;i++){
-     let r=await sb.auth.getSession();
+   for(let i=0;i<30;i++){
+     const r=await sb.auth.getSession();
      if(r.data?.session)return r.data.session;
-     await new Promise(r=>setTimeout(r,200));
+     await new Promise(resolve=>setTimeout(resolve,200));
    }
    return null;
  };
- /* 1) 링크 오류(만료/이미 사용됨 등)를 가장 먼저 처리 */
- if(hp.get('error')||hp.get('error_code')){
-   recovery=false; cleanUrl(); modes('resetRequest');
-   const code=hp.get('error_code');
-   notice(code==='otp_expired'?friendly({code}):(hp.get('error_description')||'인증 처리 중 오류가 발생했습니다.'),'error');
- }else if((tokenHash&&qType==='recovery')||hp.get('type')==='recovery'){
+ const showRecovery=async(session)=>{
+   const sess=session||await waitForSession();
+   if(!sess){
+     recovery=false;
+     cleanUrl();
+     modes('resetRequest');
+     return notice('재설정 인증 세션을 확인하지 못했습니다. 재설정 이메일을 다시 요청하고 가장 최근 메일의 링크를 한 번만 눌러 주세요.','error');
+   }
    recovery=true;
+   user=sess.user;
+   cleanUrl();
+   modes('changePassword');
+   notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
+ };
+
+ /* Supabase는 인증 실패 정보도 redirect URL의 fragment/query에 돌려줄 수 있습니다. */
+ if(hasAuthError){
+   recovery=false;
+   cleanUrl();
+   modes('resetRequest');
+   notice(errorCode==='otp_expired'
+     ? friendly({code:'otp_expired'})
+     : (errorDescription||'비밀번호 재설정 인증 중 오류가 발생했습니다.'),'error');
+   return;
  }
- /* 2) 인증 상태 이벤트. 콜백 안에서 Supabase 호출을 await하면 교착이 생길 수 있어 setTimeout으로 분리 */
+
+ /*
+  * 반드시 listener를 먼저 등록합니다.
+  * 메일 링크를 클릭하면 Supabase가 세션을 만들고 PASSWORD_RECOVERY 이벤트를 발생시킵니다.
+  */
  sb.auth.onAuthStateChange((e,s)=>{
    if(e==='PASSWORD_RECOVERY'){
-     recovery=true; user=s?.user||null;
-     modes('changePassword');
-     notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
+     recovery=true;
+     user=s?.user||null;
+     setTimeout(()=>{
+       modes('changePassword');
+       notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
+     },0);
      return;
    }
-   if(e==='SIGNED_OUT'){user=null;profile=null;return}
+   if(e==='SIGNED_OUT'){
+     user=null;
+     profile=null;
+     return;
+   }
    if(s?.user&&!recovery){
      user=s.user;
      setTimeout(async()=>{
-       try{await loadProfile(user);modes('loggedIn');sections();await refreshAll()}
-       catch(x){notice(x.message,'error')}
+       try{
+         await loadProfile(user);
+         modes('loggedIn');
+         sections();
+         await refreshAll();
+       }catch(x){notice(x.message,'error')}
      },0);
    }
  });
- if(hp.get('error')||hp.get('error_code'))return;
- /* 3) 새 방식: 메일 링크의 token_hash를 버튼을 눌렀을 때만 사용(메일 보안 스캐너가 링크를 소진하지 못함) */
- if(tokenHash&&qType==='recovery'){
-   modes('recoveryConfirm');
-   $('continueRecoveryBtn').onclick=async()=>{
-     notice('본인 확인 중...');
-     const r=await sb.auth.verifyOtp({token_hash:tokenHash,type:'recovery'});
-     cleanUrl();
-     if(r.error){recovery=false;modes('resetRequest');return notice(friendly(r.error),'error')}
-     user=r.data?.user||r.data?.session?.user||null;
-     modes('changePassword');
-     notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
-   };
-   $('cancelRecoveryBtn').onclick=()=>{recovery=false;cleanUrl();modes('login');notice('')};
+
+ /* 메일 링크가 이미 세션으로 처리된 경우를 기다립니다. */
+ if(isRecoveryLink){
+   recovery=true;
+   await showRecovery();
    return;
  }
- /* 4) 예전 방식 링크(#access_token&type=recovery) 호환: 라이브러리가 자동 처리 */
- if(hp.get('type')==='recovery'){
-   notice('인증 확인 중...');
-   const sess=await waitForSession();
-   if(!sess){
-     recovery=false; cleanUrl(); modes('resetRequest');
-     return notice('재설정 인증 세션을 확인하지 못했습니다. 메일을 새로 요청하고 가장 최근 메일의 링크를 한 번만 여세요.','error');
-   }
-   user=sess.user; cleanUrl();
-   modes('changePassword');
-   notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
-   return;
- }
- /* 5) 일반 진입 */
- let r=await sb.auth.getSession();
- if(r.data.session?.user&&!recovery){
+
+ /* 일반 진입: 기존 로그인 세션이 있으면 정상적으로 앱을 엽니다. */
+ const r=await sb.auth.getSession();
+ if(r.data?.session?.user&&!recovery){
    user=r.data.session.user;
-   try{await loadProfile(user);modes('loggedIn');sections();await refreshAll()}
-   catch(x){notice(x.message,'error')}
+   try{
+     await loadProfile(user);
+     modes('loggedIn');
+     sections();
+     await refreshAll();
+   }catch(x){notice(x.message,'error')}
  }
 }init()})();
 </script></body></html>

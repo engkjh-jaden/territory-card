@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<html lang="ko"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>온라인 구역 카드 v14</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><style>
+<html lang="ko"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>온라인 구역 카드 v15</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><style>
 :root{--p:#1769aa;--p2:#0f4f83;--bg:#f5f7fa;--b:#dbe2ea;--t:#1f2937;--m:#6b7280}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,sans-serif;line-height:1.55}header{background:linear-gradient(135deg,var(--p2),var(--p));color:#fff;padding:22px 16px}.wrap{max-width:980px;margin:auto;padding:0 14px}header h1{margin:0;font-size:23px}header p{margin:5px 0 0;opacity:.9;font-size:14px}main{padding:18px 0 50px}.card{background:#fff;border:1px solid var(--b);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px #00000008}h2{font-size:18px;margin:0 0 12px}h3{font-size:16px;margin:18px 0 8px}label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px}input,textarea,select{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff}textarea{min-height:82px;resize:vertical}button{border:0;border-radius:9px;padding:11px 14px;font:inherit;font-weight:700;cursor:pointer}.btn{background:var(--p);color:#fff}.btn:hover{background:var(--p2)}.secondary{background:#eef2f7;color:#26374a}.danger{background:#c62828;color:#fff}.small{padding:7px 10px;font-size:13px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{padding:11px 13px;border-radius:9px;background:#eef6ff;border:1px solid #cfe5ff;color:#164b78;margin:10px 0}.success{background:#edf8f1;border-color:#ccebd8;color:#17683c}.error{background:#fff1f1;border-color:#f0c7c7;color:#9d1c1c}.warning{background:#fff7e8;border-color:#f3dfb5;color:#855000}.hidden{display:none!important}.muted{color:var(--m);font-size:13px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e8f2fb;color:#155a8e;font-size:12px;font-weight:700}.territory{border:1px solid var(--b);border-radius:12px;padding:14px;margin:10px 0}.territory-title{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.territory-title strong{font-size:16px}.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.status-grid button{font-size:12px;background:#f1f5f9;color:#334155;border:1px solid var(--b)}.status-grid button.active{background:#1769aa;color:#fff;border-color:#1769aa}.maplink{display:inline-block;margin-top:8px;color:#1263a0;font-weight:700;text-decoration:none}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{padding:14px;border:1px solid var(--b);border-radius:12px;background:#fafcff}.stat b{display:block;font-size:25px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid var(--b);padding:9px 6px;text-align:left;vertical-align:top}th{background:#f8fafc}footer{color:#7a8491;font-size:12px;text-align:center;padding:18px}@media(max-width:650px){.row{grid-template-columns:1fr}.row3,.stats{grid-template-columns:1fr 1fr}.status-grid{grid-template-columns:1fr 1fr}header h1{font-size:20px}.card{padding:15px}}
 .tree-card{border:1px solid var(--b);border-radius:12px;padding:14px;margin:10px 0;background:#fbfdff}.tree-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.tree-head strong{font-size:15px}.mini{font-size:12px;color:var(--m)}.tag-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.tag-btn{background:#f1f5f9;border:1px solid var(--b);color:#334155;padding:8px 10px;font-size:12px}.tag-btn.active{background:#ffe5e5;border-color:#d32f2f;color:#a40000}.caution{display:inline-block;background:#ffe1e1;color:#a40000;border:1px solid #f2aaaa;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;margin:3px}.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.danger-outline{background:#fff1f1;color:#a40000;border:1px solid #f2b8b8}.admin-panel{border-top:2px solid #eef2f7;margin-top:18px;padding-top:4px}@media(max-width:650px){.form-grid{grid-template-columns:1fr}}
 .collab-card{border:2px solid #d7e7f7;background:#fbfdff}.join-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.participant-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.participant{padding:4px 8px;border-radius:999px;background:#eef5fb;font-size:12px}.household-card{border:1px solid var(--b);border-radius:12px;padding:12px;margin:8px 0;background:#fff}.household-head{display:flex;justify-content:space-between;gap:8px}.household-meta{font-size:12px;color:var(--m)}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e9b57;margin-right:5px}.warning-box{margin-top:8px;padding:9px 10px;border-radius:9px;background:#fff1f1;border:1px solid #f1c4c4;color:#a11919;font-weight:700}.mini-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.mini-actions button{padding:8px 9px;font-size:12px}.status-pill{padding:4px 8px;border-radius:999px;background:#eef2f7;font-size:12px;font-weight:700}.status-pill.visited{background:#eaf7ee;color:#17683c}.status-pill.absent{background:#fff7e8;color:#855000}.status-pill.refused{background:#fff0f0;color:#9d1c1c}@media(max-width:650px){.join-grid{grid-template-columns:1fr}}
 .app-shell{margin-top:12px}.app-nav{display:flex;gap:7px;overflow-x:auto;padding:6px 2px 10px;position:sticky;top:0;z-index:20;background:rgba(245,247,250,.96);backdrop-filter:blur(8px)}.app-nav button{white-space:nowrap;background:#fff;color:#334155;border:1px solid var(--b);padding:9px 11px;font-size:12px}.app-nav button.active{background:var(--p);color:#fff;border-color:var(--p)}.page{display:none}.page.active{display:block}.page-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.page-head h2{margin:0}.mobile-back{display:none}.home-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick-card{border:1px solid var(--b);border-radius:12px;padding:14px;background:#fff}.quick-card strong{display:block;font-size:15px}.map-test{height:420px;border-radius:12px;overflow:hidden;border:1px solid var(--b);background:#eef2f7}.map-status{margin-top:8px}.map-config{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.map-result{margin-top:10px}.map-marker-info{font-size:12px;line-height:1.45}.map-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.page-note{margin-bottom:12px}.nav-spacer{flex:1}.admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.admin-menu-card{padding:15px;border:1px solid var(--b);border-radius:12px;background:#fff}.admin-menu-card button{width:100%;margin-top:9px}.map-help{font-size:12px;color:var(--m);margin-top:8px}@media(max-width:650px){.home-grid,.admin-grid{grid-template-columns:1fr}.app-nav{top:0}.map-test{height:360px}.page-head .actions{width:100%}.page-head .actions button{flex:1}.map-config{grid-template-columns:1fr}}
-</style></head><body><header><div class="wrap"><h1>온라인 구역 카드</h1><p>전도 봉사용 모바일 웹앱 · v14 · 화면 분리 · 공동 참여 · 실시간 동기화 · 네이버 지도 테스트</p></div></header><main class="wrap">
+</style></head><body><header><div class="wrap"><h1>온라인 구역 카드</h1><p>전도 봉사용 모바일 웹앱 · v15 · Excel 재이관/업데이트 · 자동 좌표 · 지도 마커</p></div></header><main class="wrap">
 <section class="card" id="configCard"><h2>처음 한 번만 연결 설정</h2><div class="notice">Supabase 정보를 입력하면 이 브라우저에만 저장됩니다. <b>service_role/secret 키는 절대 입력하지 마세요.</b></div><div class="row"><div><label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://xxxx.supabase.co"/></div><div><label>Publishable / anon key</label><input id="supabaseKey" placeholder="sb_publishable_... 또는 anon key" type="password"/></div></div><div class="actions"><button class="btn" id="saveConfigBtn">연결 정보 저장</button><button class="btn secondary" id="clearConfigBtn">저장 정보 삭제</button></div><div id="configMsg"></div></section>
 <section class="card" id="authCard"><h2>로그인</h2><div class="notice hidden" id="authNotice"></div><div id="loginView"><label>이메일</label><input autocomplete="email" id="loginEmail" placeholder="이메일 주소" type="email"/><label>비밀번호</label><input autocomplete="current-password" id="loginPassword" placeholder="비밀번호" type="password"/><div class="actions"><button class="btn" id="loginBtn">로그인</button><button class="btn secondary" id="showResetBtn">비밀번호를 잊으셨나요?</button></div></div>
 <div class="hidden" id="resetRequestView"><h3>비밀번호 재설정</h3><p class="muted">가입한 이메일 주소로 비밀번호 변경 링크를 보내드립니다.</p><label>이메일</label><input autocomplete="email" id="resetEmail" placeholder="가입한 이메일 주소" type="email"/><div class="actions"><button class="btn" id="sendResetBtn">재설정 이메일 보내기</button><button class="btn secondary" id="backLoginBtn">로그인으로 돌아가기</button></div></div>
@@ -62,14 +62,14 @@
 </div></section><section class="page card" id="adminExcelPage"><div class="page-head"><h2>📥 Excel 이관</h2><button class="btn secondary small" id="backAdminHomeBtn2">← 관리자 홈</button></div><div class="admin-panel">
 <h3>📥 기존 Excel 구역 데이터 일괄 이관</h3>
 <div class="notice warning"><b>기존 데이터를 삭제하지 않고 복사합니다.</b> Excel의 여러 파일과 여러 시트를 한 번에 선택할 수 있습니다. 먼저 미리보기로 구역·건물·방문 대상을 확인한 뒤 가져오세요.</div>
-<div class="form-grid"><div><label>Excel 파일</label><input accept=".xlsx,.xls,.csv" id="legacyExcelFiles" multiple="" type="file"/></div><div><label>가져오기 옵션</label><select id="legacyImportMode"><option value="safe">안전 가져오기 — 기존 데이터는 유지</option><option value="refresh">재가져오기 — 같은 원본 행은 업데이트</option></select></div><div><label> </label><button class="btn" id="previewLegacyBtn" style="width:100%">파일 분석 / 미리보기</button></div></div>
+<div class="form-grid"><div><label>Excel 파일</label><input accept=".xlsx,.xls,.csv" id="legacyExcelFiles" multiple="" type="file"/></div><div><label>가져오기 방식</label><select id="legacyImportMode"><option value="update">기존 구역 업데이트 — 같은 원본 행 수정, 방문 기록 유지</option><option value="safe">신규 데이터만 추가 — 기존 구조는 수정하지 않음</option></select></div><div><label> </label><button class="btn" id="previewLegacyBtn" style="width:100%">파일 분석 / 변경사항 미리보기</button></div></div>
 <div class="hidden" id="legacyPreview"></div>
-<div class="actions"><button class="btn" disabled="" id="runLegacyImportBtn">선택한 Excel 모두 가져오기</button></div>
+<div class="actions"><button class="btn" disabled="" id="runLegacyImportBtn">변경사항 적용 / Excel 가져오기</button></div>
 <div id="legacyImportResult"></div>
-</div></section><section class="page card" id="naverMapPage"><div class="page-head"><h2>📍 NAVER 지도 테스트</h2><button class="btn secondary small" id="backNaverMapHomeBtn">← 관리자 홈</button></div><div class="notice warning">NAVER 지도 API v3의 최신 방식인 <b>ncpKeyId</b>를 사용합니다. Client ID와 웹 서비스 URL 등록이 필요합니다.</div><div class="map-config"><div><label>NAVER Maps Client ID (ncpKeyId)</label><input id="naverClientId" placeholder="예: abcdefghijklmnopqrst" type="text"/></div><button class="btn" id="saveNaverClientBtn">Client ID 저장</button></div><div class="map-actions"><button class="btn" id="loadNaverMapBtn">지도 불러오기</button><button class="btn secondary" id="testDaesanMapBtn">서산 대산 테스트</button><button class="btn secondary" id="centerMapBtn">현재 좌표로 이동</button></div><div class="row"><div><label>위도</label><input id="mapLat" placeholder="36.9420" step="any" type="number"/></div><div><label>경도</label><input id="mapLng" placeholder="126.4380" step="any" type="number"/></div></div><div><label>주소 → 좌표 테스트 (Geocoder)</label><input id="mapAddress" placeholder="예: 충청남도 서산시 대산읍 ..."/></div><button class="btn secondary" id="geocodeBtn">주소 검색</button><div class="notice map-status" id="naverMapStatus">Client ID를 저장한 뒤 [지도 불러오기]를 누르세요.</div><div class="map-test" id="naverMap"></div><div class="map-result" id="naverMapResult"></div><div class="map-help">테스트 지도에서 클릭한 위치의 위도·경도를 확인하고, 주소 검색 결과를 확인할 수 있습니다. 실제 구역 경계/세대 마커는 다음 단계에서 연결합니다.</div></section><section class="page card" id="helpCard"><div class="page-head"><h2>안내</h2><button class="btn secondary small" id="backHelpBtn">← 이전 화면</button></div><div class="notice warning">방문 기록에는 가능한 한 필요한 최소 정보만 입력하세요. 개인의 이름, 민감한 종교적 반응 등 불필요한 개인정보를 기록하지 않는 것을 권장합니다.</div><p class="muted">지도는 네이버 지도 검색 링크를 사용합니다. 구역 경계선(폴리곤)을 실제 지도 위에 표시하는 기능은 다음 단계에서 추가할 수 있습니다. NAVER 지도 테스트는 관리자 메뉴에서 Client ID를 입력해 확인할 수 있습니다.</p></section></div></div>
+</div></section><section class="page card" id="naverMapPage"><div class="page-head"><h2>📍 NAVER 지도 테스트</h2><button class="btn secondary small" id="backNaverMapHomeBtn">← 관리자 홈</button></div><div class="notice warning">NAVER 지도 API v3의 최신 방식인 <b>ncpKeyId</b>를 사용합니다. Client ID와 웹 서비스 URL 등록이 필요합니다.</div><div class="map-config"><div><label>NAVER Maps Client ID (ncpKeyId)</label><input id="naverClientId" placeholder="예: abcdefghijklmnopqrst" type="text"/></div><button class="btn" id="saveNaverClientBtn">Client ID 저장</button></div><h3>등록된 구역 지도</h3><div class="row"><div><label>구역</label><select id="mapTerritory"><option value="">구역 선택</option></select></div><div><label>지도 표시</label><button class="btn" id="loadTerritoryMarkersBtn" style="width:100%">구역 마커 불러오기</button></div></div><div class="notice">Excel을 처음 이관하거나 수정본을 다시 이관하면 건물 주소의 좌표를 자동으로 저장합니다. 좌표가 없는 건물만 NAVER Geocoding을 사용합니다.</div><div class="map-actions"><button class="btn" id="loadNaverMapBtn">지도 불러오기</button><button class="btn secondary" id="testDaesanMapBtn">서산 대산 테스트</button><button class="btn secondary" id="centerMapBtn">현재 좌표로 이동</button></div><div class="row"><div><label>위도</label><input id="mapLat" placeholder="36.9420" step="any" type="number"/></div><div><label>경도</label><input id="mapLng" placeholder="126.4380" step="any" type="number"/></div></div><div><label>주소 → 좌표 테스트 (Geocoder)</label><input id="mapAddress" placeholder="예: 충청남도 서산시 대산읍 ..."/></div><button class="btn secondary" id="geocodeBtn">주소 검색</button><div class="notice map-status" id="naverMapStatus">Client ID를 저장한 뒤 [지도 불러오기]를 누르세요.</div><div class="map-test" id="naverMap"></div><div class="map-result" id="naverMapResult"></div><div class="map-help">테스트 지도에서 클릭한 위치의 위도·경도를 확인하고, 주소 검색 결과를 확인할 수 있습니다. Excel에서 이관된 건물 좌표와 마커를 불러올 수 있습니다. 세대/현관 위치는 필요할 때 별도로 저장할 수 있습니다.</div></section><section class="page card" id="helpCard"><div class="page-head"><h2>안내</h2><button class="btn secondary small" id="backHelpBtn">← 이전 화면</button></div><div class="notice warning">방문 기록에는 가능한 한 필요한 최소 정보만 입력하세요. 개인의 이름, 민감한 종교적 반응 등 불필요한 개인정보를 기록하지 않는 것을 권장합니다.</div><p class="muted">지도는 네이버 지도 검색 링크를 사용합니다. 구역 경계선(폴리곤)을 실제 지도 위에 표시하는 기능은 다음 단계에서 추가할 수 있습니다. NAVER 지도 테스트는 관리자 메뉴에서 Client ID를 입력해 확인할 수 있습니다.</p></section></div></div>
 
 
-</main><footer>온라인 구역 카드 v14 · 화면 분리 · 공동 참여 · 실시간 동기화 · NAVER 지도 테스트</footer>
+</main><footer>온라인 구역 카드 v15 · Excel 재이관/업데이트 · 자동 좌표 · NAVER 지도</footer>
 <script>
 (()=>{const SITE='https://engkjh-jaden.github.io/territory-card/';const DEFAULT='https://pgqaksnioioehsysjmxj.supabase.co';const DEFAULT_KEY='sb_publishable_Jthe6DTLwGj4WlrYIV97Gw_SSHuboDc';let sb=null,user=null,profile=null,recovery=false;const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const notice=(txt,type='')=>{const el=$('authNotice');if(!el){console.error('authNotice 요소를 찾을 수 없습니다.');return}el.className='notice '+(type||'');el.textContent=txt||'';el.classList.toggle('hidden',!txt)};const cfgmsg=(txt,type='')=>{$('configMsg').innerHTML=txt?`<div class="notice ${type}">${esc(txt)}</div>`:''};const saved=()=>({url:localStorage.getItem('otc_supabase_url')||DEFAULT,key:localStorage.getItem('otc_supabase_key')||DEFAULT_KEY});function make(){let c=saved();if(!c.key)return false;try{sb=window.supabase.createClient(c.url,c.key,{auth:{flowType:'implicit',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});return true}catch(e){cfgmsg(e.message,'error');return false}}function modes(m){const map={login:'loginView',resetRequest:'resetRequestView',changePassword:'changePasswordView',loggedIn:'loggedInView'};['loginView','resetRequestView','changePasswordView','loggedInView'].forEach(x=>{const el=$(x);if(el)el.classList.add('hidden')});const target=$(map[m]||m);if(target)target.classList.remove('hidden');else console.error('인증 화면을 찾을 수 없습니다:',m)}function statusLabel(s){return({not_visited:'미방문',visited:'방문',absent:'부재',return:'방문 거절',refused:'방문 거절'})[s]||s}function date(s){return s?new Date(s).toLocaleString('ko-KR'):''}
 function showPage(id){
@@ -102,7 +102,7 @@ function v14NavSetup(){
   };
   Object.entries(links).forEach(([id,page])=>{const b=$(id);if(b)b.onclick=()=>showPage(page)});
 }
-let naverMap=null,naverMarker=null,naverScriptLoading=false;
+let naverMap=null,naverMarker=null,naverScriptLoading=false,territoryMarkers=[];
 function naverStatus(msg,type=''){const el=$('naverMapStatus');if(!el)return;el.className='notice map-status '+type;el.textContent=msg}
 function saveNaverClient(){const id=$('naverClientId')?.value.trim();if(!id)return naverStatus('NAVER Maps Client ID를 입력하세요.','error');localStorage.setItem('otc_naver_client_id',id);naverStatus('Client ID를 저장했습니다. [지도 불러오기]를 눌러 주세요.','success')}
 function naverAuthFailure(){naverStatus('NAVER 지도 인증에 실패했습니다. Client ID, Maps API 사용 설정, 웹 서비스 URL(https://engkjh-jaden.github.io)을 확인하세요.','error')}
@@ -142,10 +142,85 @@ function loadNaverMap(){
   script.onload=()=>{naverScriptLoading=false;createNaverMap()};script.onerror=()=>{naverScriptLoading=false;naverStatus('NAVER 지도 API 스크립트를 불러오지 못했습니다. Client ID와 웹 서비스 URL을 확인하세요.','error')};
   document.head.appendChild(script);naverStatus('NAVER 지도 API를 불러오는 중입니다...');
 }
+function clearTerritoryMarkers(){
+  territoryMarkers.forEach(m=>m.setMap(null)); territoryMarkers=[];
+}
+function addTerritoryMarker(row){
+  if(!naverMap || !window.naver?.maps || row.latitude==null || row.longitude==null)return;
+  const pos=new naver.maps.LatLng(Number(row.latitude),Number(row.longitude));
+  const marker=new naver.maps.Marker({position:pos,map:naverMap,title:row.building_name||'건물'});
+  const info=new naver.maps.InfoWindow({content:`<div class="map-marker-info" style="padding:8px 10px"><b>${esc(row.building_name||'건물')}</b><br>${esc(row.address||'주소 없음')}<br>${Number(row.latitude).toFixed(7)}, ${Number(row.longitude).toFixed(7)}</div>`});
+  naver.maps.Event.addListener(marker,'click',()=>info.open(naverMap,marker));
+  territoryMarkers.push(marker);
+}
+async function loadMapTerritoryOptions(){
+  if(!sb || profile?.role!=='admin' || !$('mapTerritory'))return;
+  const r=await sb.from('territories').select('id,territory_no,name').order('territory_no');
+  if(r.error)return notice(r.error.message,'error');
+  $('mapTerritory').innerHTML='<option value="">구역 선택</option>'+(r.data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.territory_no)} · ${esc(x.name)}</option>`).join('');
+}
+function ensureNaverApi(){
+  return new Promise((resolve,reject)=>{
+    if(window.naver?.maps?.Service)return resolve();
+    const id=localStorage.getItem('otc_naver_client_id')||'';
+    if(!id)return reject(new Error('NAVER Maps Client ID가 저장되어 있지 않습니다. 지도 테스트에서 먼저 저장하세요.'));
+    if(naverScriptLoading){const wait=setInterval(()=>{if(window.naver?.maps?.Service){clearInterval(wait);resolve();}},100);setTimeout(()=>{clearInterval(wait);reject(new Error('NAVER 지도 API 로딩 시간 초과'))},10000);return}
+    naverScriptLoading=true;window.navermap_authFailure=()=>{};
+    const old=document.getElementById('naverMapsScript');if(old)old.remove();
+    const script=document.createElement('script');script.id='naverMapsScript';script.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId='+encodeURIComponent(id)+'&submodules=geocoder';script.async=true;
+    script.onload=()=>{naverScriptLoading=false;resolve()};script.onerror=()=>{naverScriptLoading=false;reject(new Error('NAVER 지도 API를 불러오지 못했습니다.'))};document.head.appendChild(script);
+  });
+}
+async function geocodeAddress(query){
+  if(!window.naver?.maps?.Service)throw new Error('NAVER Geocoder가 준비되지 않았습니다.');
+  return await new Promise((resolve,reject)=>naver.maps.Service.geocode({query},(status,response)=>{
+    if(status!==naver.maps.Service.Status.OK)return reject(new Error('주소 검색 실패'));
+    const a=response.v2?.addresses?.[0]; if(!a)return reject(new Error('검색 결과 없음'));
+    resolve({latitude:parseFloat(a.y),longitude:parseFloat(a.x),roadAddress:a.roadAddress||'',jibunAddress:a.jibunAddress||''});
+  }));
+}
+async function geocodeMissingBuildings(territoryId){
+  const tr=await sb.from('territories').select('territory_no,name,description').eq('id',territoryId).maybeSingle();
+  const territory=tr.data||{};
+  let q=sb.from('buildings').select('id,building_name,address,latitude,longitude').eq('territory_id',territoryId).order('building_name');
+  const r=await q; if(r.error)throw r.error;
+  const rows=r.data||[]; let updated=0,failed=0;
+  for(const b of rows){
+    if(b.latitude!=null && b.longitude!=null)continue;
+    const query=(b.address||b.building_name||'').trim(); if(!query){failed++;continue;}
+    try{
+      let g;
+      try{g=await geocodeAddress(query)}catch(first){const fallback=[territory.description,territory.name,query].filter(Boolean).join(' ');g=await geocodeAddress(fallback)}
+      const u=await sb.from('buildings').update({latitude:g.latitude,longitude:g.longitude,geocode_query:query,geocoded_at:new Date().toISOString()}).eq('id',b.id);
+      if(u.error)throw u.error; b.latitude=g.latitude;b.longitude=g.longitude;updated++;
+    }catch(e){failed++;}
+    await new Promise(r=>setTimeout(r,120));
+  }
+  return {updated,failed,total:rows.length};
+}
+async function loadTerritoryMarkers(){
+  if(!naverMap)return naverStatus('먼저 [지도 불러오기]를 눌러 주세요.','error');
+  const tid=$('mapTerritory')?.value; if(!tid)return naverStatus('구역을 선택하세요.','error');
+  naverStatus('구역의 건물 좌표를 확인하고 있습니다...');
+  try{
+    const g=await geocodeMissingBuildings(tid);
+    const r=await sb.from('buildings').select('id,building_name,address,latitude,longitude').eq('territory_id',tid).order('building_name');
+    if(r.error)throw r.error;
+    clearTerritoryMarkers();
+    const rows=(r.data||[]).filter(x=>x.latitude!=null&&x.longitude!=null);
+    if(!rows.length)return naverStatus(`표시할 좌표가 없습니다. 전체 ${g.total}건 중 좌표 생성 ${g.updated}건, 실패 ${g.failed}건입니다.`,'warning');
+    rows.forEach(addTerritoryMarker);
+    const bounds=new naver.maps.LatLngBounds(); rows.forEach(x=>bounds.extend(new naver.maps.LatLng(Number(x.latitude),Number(x.longitude))));
+    naverMap.fitBounds(bounds,{top:50,right:30,bottom:50,left:30});
+    $('naverMapResult').innerHTML=`<div class="notice success"><b>구역 마커 표시 완료</b><br>건물 ${rows.length}개 · 새 좌표 ${g.updated}개 · 좌표 검색 실패 ${g.failed}개<br>마커를 누르면 건물 주소와 좌표를 확인할 수 있습니다.</div>`;
+    naverStatus('Excel 데이터에서 건물 마커를 자동으로 표시했습니다.','success');
+  }catch(e){console.error(e);naverStatus('구역 마커를 불러오는 중 오류: '+(e.message||e),'error');}
+}
 function initNaverUi(){
   const savedId=localStorage.getItem('otc_naver_client_id')||'';if($('naverClientId'))$('naverClientId').value=savedId;
   $('saveNaverClientBtn')?.addEventListener('click',saveNaverClient);
   $('loadNaverMapBtn')?.addEventListener('click',loadNaverMap);
+  $('loadTerritoryMarkersBtn')?.addEventListener('click',loadTerritoryMarkers);
   $('testDaesanMapBtn')?.addEventListener('click',()=>{ $('mapLat').value='36.95';$('mapLng').value='126.44'; if(!naverMap)loadNaverMap(); else {const p=new naver.maps.LatLng(36.95,126.44);naverMap.setCenter(p);naverMap.setZoom(15);naverMarker?.setPosition(p)} });
   $('centerMapBtn')?.addEventListener('click',()=>{if(!naverMap)return naverStatus('먼저 지도를 불러오세요.','error');const lat=parseFloat($('mapLat').value),lng=parseFloat($('mapLng').value);if(!Number.isFinite(lat)||!Number.isFinite(lng))return naverStatus('위도와 경도를 올바르게 입력하세요.','error');const p=new naver.maps.LatLng(lat,lng);naverMap.setCenter(p);naverMarker?.setPosition(p)});
   $('geocodeBtn')?.addEventListener('click',()=>{if(!naverMap||!window.naver?.maps?.Service)return naverStatus('먼저 지도를 불러오세요.','error');const q=$('mapAddress').value.trim();if(!q)return naverStatus('검색할 주소를 입력하세요.','error');naver.maps.Service.geocode({query:q},function(status,response){if(status!==naver.maps.Service.Status.OK)return naverStatus('주소 검색에 실패했습니다. Geocoding 설정과 Client ID를 확인하세요.','error');const items=response.v2?.addresses||[];if(!items.length)return naverStatus('검색 결과가 없습니다.','warning');const a=items[0],lat=parseFloat(a.y),lng=parseFloat(a.x);$('mapLat').value=lat.toFixed(7);$('mapLng').value=lng.toFixed(7);const p=new naver.maps.LatLng(lat,lng);naverMap.setCenter(p);naverMap.setZoom(17);naverMarker?.setPosition(p);$('naverMapResult').innerHTML=`<div class="notice success">검색 결과: ${esc(a.roadAddress||a.jibunAddress||q)}<br>위도 ${lat.toFixed(7)} · 경도 ${lng.toFixed(7)}</div>`;});});
@@ -237,8 +312,34 @@ function legacyTerritoryInfo(sheetName){
   return m?{no:m[2],name:m[1].trim()||s}:{no:s,name:s};
 }
 function legacyPreviewHtml(items){
-  const rows=items.map(x=>`<tr><td>${esc(x.file_name)}</td><td>${esc(x.sheet_name)}</td><td>${x.rows.length}</td><td>${new Set(x.rows.map(r=>legacyNorm((r.street||'')+'|'+(r.building_no||'')))).size}</td><td>${x.rows.filter(r=>legacyLooksEntrance(r.floor)).length}</td><td>${x.rows.filter(r=>r.action==='D').length}</td></tr>`).join('');
-  return `<div class="notice success">총 <b>${items.length}</b>개 시트, <b>${items.reduce((a,x)=>a+x.rows.length,0)}</b>개 원본 행을 읽었습니다.</div><div style="overflow:auto"><table><thead><tr><th>파일</th><th>시트/구역</th><th>행</th><th>건물 후보</th><th>현관 후보</th><th>삭제(D)</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const rows=items.map(x=>`<tr><td>${esc(x.file_name)}</td><td>${esc(x.sheet_name)}</td><td>${x.rows.length}</td><td>${x.stats?.newCount??'-'}</td><td>${x.stats?.updateCount??'-'}</td><td>${x.stats?.deleteCount??'-'}</td><td>${x.stats?.unchanged??'-'}</td></tr>`).join('');
+  return `<div class="notice success">총 <b>${items.length}</b>개 시트, <b>${items.reduce((a,x)=>a+x.rows.length,0)}</b>개 원본 행을 읽었습니다.</div><div style="overflow:auto"><table><thead><tr><th>파일</th><th>시트/구역</th><th>행</th><th>신규</th><th>수정</th><th>삭제(D)</th><th>변경 없음</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+async function getExistingImportStats(items){
+  const t=await sb.from('territories').select('id,territory_no,name'); if(t.error)throw t.error;
+  const tm=new Map((t.data||[]).map(x=>[x.territory_no,x]));
+  for(const sheet of items){
+    const existing=tm.get(sheet.territory.no); sheet.existingTerritory=existing||null;
+    if(existing && legacyNorm(existing.name)!==legacyNorm(sheet.territory.name)){
+      sheet.conflict=`구역 번호 ${sheet.territory.no}가 이미 '${existing.name}'으로 등록되어 있어 Excel '${sheet.territory.name}'와 충돌합니다.`; continue;
+    }
+    const q=existing?await sb.from('households').select('legacy_key,household_name,address,visit_order,description,building_id,entrance_id').like('legacy_key',`${sheet.file_name}|${sheet.sheet_name}|%`):{data:[],error:null};
+    if(q.error)throw q.error;
+    const hm=new Map((q.data||[]).map(x=>[x.legacy_key,x]));
+    let newCount=0,updateCount=0,unchanged=0,deleteCount=0;
+    for(const r of sheet.rows){
+      if(r.action==='D'){deleteCount++;continue}
+      const key=`${sheet.file_name}|${sheet.sheet_name}|${r.legacy_id||r.source_row}`;
+      const old=hm.get(key);
+      if(!old){newCount++;continue}
+      const address=[r.street,r.building_no].filter(Boolean).join(' ');
+      const name=r.name_ho||`방문 대상 ${r.visit_order||r.source_row}`;
+      const desc=[legacyClean(r.floor)&&!legacyLooksEntrance(r.floor)?legacyClean(r.floor):null,r.refusal_state?`기존 거절/금지: ${r.refusal_state}`:null,r.visit_state?`기존 방문/부재: ${r.visit_state}`:null].filter(Boolean).join(' · ')||null;
+      if(legacyNorm(old.household_name)!==legacyNorm(name)||legacyNorm(old.address||'')!==legacyNorm(address)||Number(old.visit_order||0)!==Number(r.visit_order||0)||legacyNorm(old.description||'')!==legacyNorm(desc||'')) updateCount++; else unchanged++;
+    }
+    sheet.stats={newCount,updateCount,deleteCount,unchanged};
+  }
+  return items;
 }
 async function previewLegacy(){
   const files=[...($('legacyExcelFiles').files||[])];
@@ -254,78 +355,71 @@ async function previewLegacy(){
         if(rows.length) all.push({file_name:file.name,sheet_name:sheetName,rows,territory:legacyTerritoryInfo(sheetName)});
       }
     }
-    window._legacyWorkbookData=all;
-    $('legacyPreview').innerHTML=legacyPreviewHtml(all);$('legacyPreview').classList.remove('hidden');$('runLegacyImportBtn').disabled=!all.length;
-    $('legacyImportResult').innerHTML='';
-    notice(`Excel 분석 완료: ${all.length}개 시트를 가져올 준비가 되었습니다.`,'success');
+    window._legacyWorkbookData=await getExistingImportStats(all);
+    const conflicts=window._legacyWorkbookData.filter(x=>x.conflict);
+    $('legacyPreview').innerHTML=legacyPreviewHtml(window._legacyWorkbookData)+(conflicts.length?`<div class="notice error"><b>구역 번호 충돌 ${conflicts.length}건</b><br>${conflicts.map(x=>esc(x.conflict)).join('<br>')}</div>`:'')+'<div class="notice">업데이트는 세대/건물 기본정보만 수정합니다. 방문 상태·방문 이력·방문 거절 이력·현장 특이사항은 삭제하지 않습니다.</div>';
+    $('legacyPreview').classList.remove('hidden'); $('runLegacyImportBtn').disabled=!all.length||conflicts.length>0;
+    $('legacyImportResult').innerHTML=''; notice(`Excel 분석 완료: ${all.length}개 시트를 확인했습니다.`,'success');
   }catch(e){console.error(e);notice('Excel 분석 중 오류: '+e.message,'error')}
 }
 async function legacyGetTerritory(info){
   let q=await sb.from('territories').select('id,territory_no,name').eq('territory_no',info.no).maybeSingle();
   if(q.error)return {error:q.error};
-  if(q.data){
-    const same=legacyNorm(q.data.name)===legacyNorm(info.name);
-    if(!same)return {error:new Error(`구역 번호 충돌: Excel '${info.no} · ${info.name}'와 기존 '${q.data.territory_no} · ${q.data.name}'의 이름이 다릅니다. 자동 병합하지 않았습니다.`),conflict:true,existing:q.data,requested:info};
-    return {data:q.data,created:false};
-  }
+  if(q.data){const same=legacyNorm(q.data.name)===legacyNorm(info.name);if(!same)return {error:new Error(`구역 번호 충돌: Excel '${info.no} · ${info.name}'와 기존 '${q.data.territory_no} · ${q.data.name}'의 이름이 다릅니다. 자동 병합하지 않았습니다.`),conflict:true,existing:q.data,requested:info};return {data:q.data,created:false};}
   let r=await sb.from('territories').insert({territory_no:info.no,name:info.name,description:`Excel 이관 · ${info.name}`,created_by:user.id}).select('id,territory_no,name').single();
   return {data:r.data,created:true,error:r.error};
 }
-function legacyBuildingType(rows){
-  const numeric=rows.filter(r=>/^\s*\d{2,4}(?:호)?\s*$/.test(legacyClean(r.name_ho))).length;
-  const floors=rows.filter(r=>legacyClean(r.floor)).length;
-  if(numeric>=2 && floors>=2) return 'apartment';
-  if(rows.some(r=>legacyClean(r.name_ho).includes('펜션'))) return 'commercial';
-  return 'other';
-}
-async function legacyImportSheet(sheet, batchId){
-  const tr=await legacyGetTerritory(sheet.territory);if(tr.error)throw tr.error;
-  const tid=tr.data.id;
-  const existingB=await sb.from('buildings').select('id,legacy_key,building_name,address');if(existingB.error)throw existingB.error;
-  const existingE=await sb.from('building_entrances').select('id,building_id,legacy_key,entrance_name');if(existingE.error)throw existingE.error;
-  const existingH=await sb.from('households').select('id,building_id,entrance_id,legacy_key,household_name');if(existingH.error)throw existingH.error;
-  const bm=new Map((existingB.data||[]).map(x=>[x.legacy_key,x]));
-  const em=new Map((existingE.data||[]).map(x=>[x.legacy_key,x]));
+function legacyBuildingType(rows){const numeric=rows.filter(r=>/^\s*\d{2,4}(?:호)?\s*$/.test(legacyClean(r.name_ho))).length;const floors=rows.filter(r=>legacyClean(r.floor)).length;if(numeric>=2&&floors>=2)return 'apartment';if(rows.some(r=>legacyClean(r.name_ho).includes('펜션')))return 'commercial';return 'other';}
+async function legacyImportSheet(sheet,batchId){
+  const tr=await legacyGetTerritory(sheet.territory);if(tr.error)throw tr.error;const tid=tr.data.id;
+  const existingB=await sb.from('buildings').select('id,territory_id,legacy_key,building_name,address,building_type,description,latitude,longitude').eq('territory_id',tid);if(existingB.error)throw existingB.error;
+  const existingE=await sb.from('building_entrances').select('id,building_id,legacy_key,entrance_name,entrance_order,description').in('building_id',(existingB.data||[]).map(x=>x.id).length?(existingB.data||[]).map(x=>x.id):['00000000-0000-0000-0000-000000000000']);
+  if(existingE.error)throw existingE.error;
+  const existingH=await sb.from('households').select('id,building_id,entrance_id,legacy_key,household_name,address,visit_order,description,is_active').like('legacy_key',`${sheet.file_name}|${sheet.sheet_name}|%`);if(existingH.error)throw existingH.error;
+  const bm=new Map((existingB.data||[]).filter(x=>x.legacy_key).map(x=>[x.legacy_key,x]));
+  const em=new Map((existingE.data||[]).filter(x=>x.legacy_key).map(x=>[x.legacy_key,x]));
   const hm=new Map((existingH.data||[]).map(x=>[x.legacy_key,x]));
-  const archive=[];let imported=0,skipped=0;
+  const archive=[];let added=0,updated=0,skipped=0,deleted=0;
   for(const r of sheet.rows){
-    if(r.action==='D'){skipped++;archive.push({batch_id:batchId,sheet_name:sheet.sheet_name,source_row:r.source_row,legacy_id:r.legacy_id,action:r.action,raw_data:r,territory_id:tid,created_by:user.id});continue}
+    const hKey=`${sheet.file_name}|${sheet.sheet_name}|${r.legacy_id||r.source_row}`;
+    if(r.action==='D'){deleted++;const old=hm.get(hKey);if(old && $('legacyImportMode').value==='update'){const du=await sb.from('households').update({is_active:false}).eq('id',old.id);if(du.error)throw du.error;}archive.push({batch_id:batchId,sheet_name:sheet.sheet_name,source_row:r.source_row,legacy_id:r.legacy_id,action:r.action,raw_data:r,territory_id:tid,household_id:old?.id||null,building_id:old?.building_id||null,entrance_id:old?.entrance_id||null,created_by:user.id});continue}
     const address=[r.street,r.building_no].filter(Boolean).join(' ');
-    const bKey=`${tid}|${legacyNorm(address||'no-address-'+(r.legacy_id||r.source_row))}`;
-    let b=bm.get(bKey);
-    if(!b){
-      const sameRows=sheet.rows.filter(x=>legacyNorm([x.street,x.building_no].filter(Boolean).join(' '))===legacyNorm(address));
-      const bp={territory_id:tid,building_type:legacyBuildingType(sameRows),building_name:address||`주소 없음 · ${r.legacy_id||r.source_row}`,address:address||null,description:'기존 Excel 이관 데이터',created_by:user.id,legacy_key:bKey};
-      const br=await sb.from('buildings').insert(bp).select('id,legacy_key,building_name,address').single();
-      if(br.error)throw br.error;b=br.data;bm.set(bKey,b);
-    }
+    const hOld=hm.get(hKey);
+    let b=null;
+    if(hOld){b=(existingB.data||[]).find(x=>x.id===hOld.building_id)||null;}
+    if(!b){const bKey=`${tid}|${legacyNorm(address||'no-address-'+(r.legacy_id||r.source_row))}`;b=bm.get(bKey);if(!b){const sameRows=sheet.rows.filter(x=>legacyNorm([x.street,x.building_no].filter(Boolean).join(' '))===legacyNorm(address));const bp={territory_id:tid,building_type:legacyBuildingType(sameRows),building_name:address||`주소 없음 · ${r.legacy_id||r.source_row}`,address:address||null,description:'기존 Excel 이관 데이터',created_by:user.id,legacy_key:bKey};const br=await sb.from('buildings').insert(bp).select('id,territory_id,legacy_key,building_name,address,building_type,description,latitude,longitude').single();if(br.error)throw br.error;b=br.data;bm.set(bKey,b)}}
+    if($('legacyImportMode').value==='update' && hOld && b && legacyNorm(b.address||'')!==legacyNorm(address)){const ur=await sb.from('buildings').update({building_name:address||b.building_name,address:address||null}).eq('id',b.id);if(ur.error)throw ur.error;b.address=address||null;b.building_name=address||b.building_name;}
     let e=null;const floor=legacyClean(r.floor);
     if(legacyLooksEntrance(floor)){
-      const eKey=`${b.id}|${legacyNorm(floor)}`;e=em.get(eKey);
-      if(!e){const er=await sb.from('building_entrances').insert({building_id:b.id,entrance_name:floor,entrance_order:r.visit_order||0,description:'Excel 이관 · 현관/구역 표기',legacy_key:eKey}).select('id,building_id,legacy_key,entrance_name').single();if(er.error)throw er.error;e=er.data;em.set(eKey,e)}
+      if(hOld?.entrance_id)e=(existingE.data||[]).find(x=>x.id===hOld.entrance_id)||null;
+      if(!e){const eKey=`${b.id}|${legacyNorm(floor)}`;e=em.get(eKey);if(!e){const er=await sb.from('building_entrances').insert({building_id:b.id,entrance_name:floor,entrance_order:r.visit_order||0,description:'Excel 이관 · 현관/구역 표기',legacy_key:eKey}).select('id,building_id,legacy_key,entrance_name,entrance_order,description').single();if(er.error)throw er.error;e=er.data;em.set(eKey,e)}else if($('legacyImportMode').value==='update' && legacyNorm(e.entrance_name)!==legacyNorm(floor)){const eu=await sb.from('building_entrances').update({entrance_name:floor,entrance_order:r.visit_order||0}).eq('id',e.id);if(eu.error)throw eu.error;e.entrance_name=floor;e.entrance_order=r.visit_order||0}}
     }
-    const hKey=`${sheet.file_name}|${sheet.sheet_name}|${r.legacy_id||r.source_row}`;
-    let h=hm.get(hKey);
     const hName=r.name_ho||`방문 대상 ${r.visit_order||r.source_row}`;
-    const hp={building_id:b.id,entrance_id:e?.id||null,household_name:hName,address:address||null,visit_order:r.visit_order||0,description:[floor&&!legacyLooksEntrance(floor)?floor:null,r.refusal_state?`기존 거절/금지: ${r.refusal_state}`:null,r.visit_state?`기존 방문/부재: ${r.visit_state}`:null].filter(Boolean).join(' · ')||null,legacy_key:hKey};
-    if(!h){const hr=await sb.from('households').insert(hp).select('id,building_id,entrance_id,legacy_key,household_name').single();if(hr.error)throw hr.error;h=hr.data;hm.set(hKey,h)}
-    archive.push({batch_id:batchId,sheet_name:sheet.sheet_name,source_row:r.source_row,legacy_id:r.legacy_id,action:r.action,raw_data:r,territory_id:tid,building_id:b.id,entrance_id:e?.id||null,household_id:h.id,created_by:user.id});imported++;
+    const desc=[floor&&!legacyLooksEntrance(floor)?floor:null,r.refusal_state?`기존 거절/금지: ${r.refusal_state}`:null,r.visit_state?`기존 방문/부재: ${r.visit_state}`:null].filter(Boolean).join(' · ')||null;
+    const hp={building_id:b.id,entrance_id:e?.id||null,household_name:hName,address:address||null,visit_order:r.visit_order||0,description:desc,legacy_key:hKey,is_active:true};
+    let h=hOld;
+    if(!h){const hr=await sb.from('households').insert(hp).select('id,building_id,entrance_id,legacy_key,household_name,address,visit_order,description,is_active').single();if(hr.error)throw hr.error;h=hr.data;hm.set(hKey,h);added++}
+    else if($('legacyImportMode').value==='update'){
+      const changed=legacyNorm(h.household_name)!==legacyNorm(hp.household_name)||legacyNorm(h.address||'')!==legacyNorm(hp.address||'')||Number(h.visit_order||0)!==Number(hp.visit_order||0)||legacyNorm(h.description||'')!==legacyNorm(hp.description||'')||h.building_id!==hp.building_id||h.entrance_id!==hp.entrance_id;
+      if(changed){const hu=await sb.from('households').update({building_id:hp.building_id,entrance_id:hp.entrance_id,household_name:hp.household_name,address:hp.address,visit_order:hp.visit_order,description:hp.description,is_active:true}).eq('id',h.id);if(hu.error)throw hu.error;updated++}else skipped++;
+    }else skipped++;
+    archive.push({batch_id:batchId,sheet_name:sheet.sheet_name,source_row:r.source_row,legacy_id:r.legacy_id,action:r.action,raw_data:r,territory_id:tid,building_id:b.id,entrance_id:e?.id||null,household_id:h.id,created_by:user.id});
   }
   for(let i=0;i<archive.length;i+=100){const ar=await sb.from('legacy_import_rows').insert(archive.slice(i,i+100));if(ar.error)throw ar.error}
-  return {sheet:sheet.sheet_name,rows:sheet.rows.length,imported,skipped,territory:sheet.territory,created:tr.created};
+  return {sheet:sheet.sheet_name,rows:sheet.rows.length,imported:added+updated,added,updated,skipped,deleted,territory:sheet.territory,created:tr.created};
 }
 async function runLegacyImport(){
   const sheets=window._legacyWorkbookData||[];if(!sheets.length)return notice('먼저 Excel 파일을 분석하세요.','error');
-  $('runLegacyImportBtn').disabled=true;$('legacyImportResult').innerHTML='<div class="notice">가져오는 중입니다. 파일 수와 행 수에 따라 잠시 걸릴 수 있습니다.</div>';
+  if(sheets.some(x=>x.conflict))return notice('구역 번호 충돌이 있어 먼저 확인해야 합니다.','error');
+  $('runLegacyImportBtn').disabled=true;$('legacyImportResult').innerHTML='<div class="notice">가져오는 중입니다. 수정본은 기존 방문 기록을 건드리지 않습니다.</div>';
   try{
-    let totalRows=0,totalImported=0,totalSkipped=0;const results=[];
-    for(const s of sheets){const b=await sb.from('legacy_import_batches').insert({file_name:s.file_name,sheet_count:1,row_count:s.rows.length,created_by:user.id}).select('id').single();if(b.error)throw b.error;const x=await legacyImportSheet(s,b.data.id);results.push(x);totalRows+=x.rows;totalImported+=x.imported;totalSkipped+=x.skipped;await sb.from('legacy_import_batches').update({sheet_count:1,row_count:x.rows,imported_count:x.imported,skipped_count:x.skipped}).eq('id',b.data.id)}
-    $('legacyImportResult').innerHTML=`<div class="notice success"><b>이관 완료</b><br>원본 행 ${totalRows}건 · 신규/처리 ${totalImported}건 · 삭제(D) 제외 ${totalSkipped}건</div><table><thead><tr><th>구역</th><th>행</th><th>처리</th><th>D 제외</th></tr></thead><tbody>${results.map(x=>`<tr><td>${esc(x.territory.no)} · ${esc(x.territory.name)}</td><td>${x.rows}</td><td>${x.imported}</td><td>${x.skipped}</td></tr>`).join('')}</tbody></table>`;
-    notice('기존 Excel 데이터를 새 구역 구조로 이관했습니다.','success');await admin();await loadStructure();
-  }catch(e){console.error(e);$('legacyImportResult').innerHTML=`<div class="notice error">이관 중 오류: ${esc(e.message||e)}</div>`;notice('이관 중 오류가 발생했습니다.','error')}
+    let totalRows=0,totalAdded=0,totalUpdated=0,totalSkipped=0,totalDeleted=0;const results=[];
+    for(const s of sheets){const b=await sb.from('legacy_import_batches').insert({file_name:s.file_name,sheet_count:1,row_count:s.rows.length,created_by:user.id}).select('id').single();if(b.error)throw b.error;const x=await legacyImportSheet(s,b.data.id);results.push(x);totalRows+=x.rows;totalAdded+=x.added;totalUpdated+=x.updated;totalSkipped+=x.skipped;totalDeleted+=x.deleted;await sb.from('legacy_import_batches').update({sheet_count:1,row_count:x.rows,imported_count:x.imported,skipped_count:x.skipped}).eq('id',b.data.id)}
+    $('legacyImportResult').innerHTML=`<div class="notice success"><b>Excel 반영 완료</b><br>원본 행 ${totalRows}건 · 신규 ${totalAdded}건 · 수정 ${totalUpdated}건 · 변경 없음 ${totalSkipped}건 · D(삭제) ${totalDeleted}건<br><small>방문 상태/방문 이력/방문 거절/특이사항은 삭제하지 않았습니다.</small></div><table><thead><tr><th>구역</th><th>행</th><th>신규</th><th>수정</th><th>변경 없음</th><th>D</th></tr></thead><tbody>${results.map(x=>`<tr><td>${esc(x.territory.no)} · ${esc(x.territory.name)}</td><td>${x.rows}</td><td>${x.added}</td><td>${x.updated}</td><td>${x.skipped}</td><td>${x.deleted}</td></tr>`).join('')}</tbody></table>`;
+    notice('Excel 수정본을 안전하게 반영했습니다. 주소 좌표를 자동으로 확인합니다.','success');await admin();await loadStructure();await loadMapTerritoryOptions();try{await ensureNaverApi();for(const s of sheets){const tr=await sb.from('territories').select('id').eq('territory_no',s.territory.no).maybeSingle();if(tr.data)await geocodeMissingBuildings(tr.data.id)}}catch(ge){console.warn('자동 좌표 생성 생략:',ge.message)}
+  }catch(e){console.error(e);$('legacyImportResult').innerHTML=`<div class="notice error">반영 중 오류: ${esc(e.message||e)}</div>`;notice('Excel 반영 중 오류가 발생했습니다.','error')}
   finally{$('runLegacyImportBtn').disabled=false}
 }
-
 async function addTerritory(){let n=$('territoryNo').value.trim(),name=$('territoryName').value.trim(),d=$('territoryDesc').value.trim();if(!n||!name)return notice('구역 번호와 구역 이름을 입력하세요.','error');let r=await sb.from('territories').insert({territory_no:n,name,description:d,created_by:user.id});if(r.error)return notice(r.error.message,'error');$('territoryNo').value='';$('territoryName').value='';$('territoryDesc').value='';notice('구역이 등록되었습니다.','success');await admin()}async function assign(){let t=$('assignTerritory').value,v=$('assignVolunteer').value;if(!t||!v)return notice('구역과 봉사자를 모두 선택하세요.','error');let r=await sb.from('assignments').insert({territory_id:t,user_id:v,assigned_by:user.id,status:'active'});if(r.error)return notice(r.error.message,'error');notice('구역을 배정했습니다.','success');await admin()}async function loadStructure(){
  if(profile?.role!=='admin')return;
  let tr=await sb.from('territories').select('id,territory_no,name').order('territory_no');
@@ -421,7 +515,7 @@ async function addFieldNote(){
  document.querySelectorAll('.tag-btn').forEach(b=>b.classList.remove('active'));$('fieldNoteContent').value='';
  notice('현장 특이사항이 저장되었습니다.','success');await loadFieldNotes();
 }
-async function refreshAll(){v14Sections();await refreshVolunteer();await history();if(profile?.role==='admin'){await admin();await loadStructure()}}
+async function refreshAll(){v14Sections();await refreshVolunteer();await history();if(profile?.role==='admin'){await admin();await loadStructure();await loadMapTerritoryOptions()}}
 $('saveConfigBtn').onclick=()=>{let u=$('supabaseUrl').value.trim().replace(/\/+$/,''),k=$('supabaseKey').value.trim();if(!u||!k)return cfgmsg('Supabase URL과 Publishable/anon key를 모두 입력하세요.','error');if(/service_role|secret/i.test(k))return cfgmsg('service_role/secret 키는 사용할 수 없습니다. Publishable/anon key를 입력하세요.','error');localStorage.setItem('otc_supabase_url',u);localStorage.setItem('otc_supabase_key',k);if(make()){modes('login');cfgmsg('연결 정보 저장 완료.','success')}};$('clearConfigBtn').onclick=()=>{localStorage.removeItem('otc_supabase_url');localStorage.removeItem('otc_supabase_key');location.reload()};$('loginBtn').onclick=login;$('loginPassword').onkeydown=e=>{if(e.key==='Enter')login()};$('showResetBtn').onclick=()=>{$('resetEmail').value=$('loginEmail').value.trim();modes('resetRequest');};$('backLoginBtn').onclick=()=>modes('login');$('sendResetBtn').onclick=resetRequest;$('changePasswordBtn').onclick=changePassword;$('cancelResetBtn').onclick=()=>{recovery=false;if(sb)sb.auth.signOut();modes('login')};$('logoutBtn').onclick=logout;$('volunteerLogoutBtn').onclick=logout;$('adminLogoutBtn').onclick=logout;$('refreshVolunteerBtn').onclick=refreshVolunteer;$('refreshAdminBtn').onclick=admin;$('addTerritoryBtn').onclick=addTerritory;/* legacy manual assignment UI was removed; keep the old function harmlessly unused */$('openDailyTerritoryBtn').onclick=openDailyTerritory;$('addBuildingBtn').onclick=addBuilding;$('addEntranceBtn').onclick=addEntrance;$('addHouseholdBtn').onclick=addHousehold;$('addFieldNoteBtn').onclick=addFieldNote;$('previewLegacyBtn').onclick=previewLegacy;$('runLegacyImportBtn').onclick=runLegacyImport;v14NavSetup();initNaverUi();document.querySelectorAll('.tag-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tag-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
 async function init(){
  let c=saved();

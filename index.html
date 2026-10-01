@@ -72,6 +72,85 @@
 </main><footer>온라인 구역 카드 v14 · 화면 분리 · 공동 참여 · 실시간 동기화 · NAVER 지도 테스트</footer>
 <script>
 (()=>{const SITE='https://engkjh-jaden.github.io/territory-card/';const DEFAULT='https://pgqaksnioioehsysjmxj.supabase.co';const DEFAULT_KEY='sb_publishable_Jthe6DTLwGj4WlrYIV97Gw_SSHuboDc';let sb=null,user=null,profile=null,recovery=false;const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const notice=(txt,type='')=>{const el=$('authNotice');if(!el){console.error('authNotice 요소를 찾을 수 없습니다.');return}el.className='notice '+(type||'');el.textContent=txt||'';el.classList.toggle('hidden',!txt)};const cfgmsg=(txt,type='')=>{$('configMsg').innerHTML=txt?`<div class="notice ${type}">${esc(txt)}</div>`:''};const saved=()=>({url:localStorage.getItem('otc_supabase_url')||DEFAULT,key:localStorage.getItem('otc_supabase_key')||DEFAULT_KEY});function make(){let c=saved();if(!c.key)return false;try{sb=window.supabase.createClient(c.url,c.key,{auth:{flowType:'implicit',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});return true}catch(e){cfgmsg(e.message,'error');return false}}function modes(m){const map={login:'loginView',resetRequest:'resetRequestView',changePassword:'changePasswordView',loggedIn:'loggedInView'};['loginView','resetRequestView','changePasswordView','loggedInView'].forEach(x=>{const el=$(x);if(el)el.classList.add('hidden')});const target=$(map[m]||m);if(target)target.classList.remove('hidden');else console.error('인증 화면을 찾을 수 없습니다:',m)}function statusLabel(s){return({not_visited:'미방문',visited:'방문',absent:'부재',return:'방문 거절',refused:'방문 거절'})[s]||s}function date(s){return s?new Date(s).toLocaleString('ko-KR'):''}
+function showPage(id){
+  const el=$(id);
+  if(!el)return;
+  document.querySelectorAll('#pageRoot .page').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#appNav [data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===id));
+  if(id==='naverMapPage' && typeof window._initNaverMapWhenReady==='function') window._initNaverMapWhenReady();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function v14Sections(){
+  const shell=$('appShell');
+  if(!shell)return;
+  shell.classList.remove('hidden');
+  const adminRole=profile?.role==='admin';
+  document.querySelectorAll('.nav-vol').forEach(x=>x.classList.toggle('hidden',adminRole));
+  document.querySelectorAll('.nav-admin').forEach(x=>x.classList.toggle('hidden',!adminRole));
+  document.querySelectorAll('#pageRoot .page').forEach(x=>x.classList.remove('active'));
+  showPage(adminRole?'adminHomePage':'volunteerHomePage');
+}
+function v14NavSetup(){
+  document.querySelectorAll('#appNav [data-page]').forEach(btn=>btn.addEventListener('click',()=>showPage(btn.dataset.page)));
+  const links={
+    goAdminTerritories:'adminTerritoriesPage',goAdminStructure:'adminStructurePage',goAdminNotes:'adminNotesPage',
+    goAdminExcel:'adminExcelPage',goNaverMap:'naverMapPage',backVolunteerHomeBtn:'volunteerHomePage',
+    backVolunteerHomeBtn2:'volunteerHomePage',backAdminHomeBtn:'adminHomePage',backAdminHomeBtn2:'adminHomePage',
+    backAdminHomeBtn3:'adminHomePage',backAdminHomeBtn4:'adminHomePage',backNaverMapHomeBtn:'adminHomePage',
+    backHelpBtn:'volunteerHomePage'
+  };
+  Object.entries(links).forEach(([id,page])=>{const b=$(id);if(b)b.onclick=()=>showPage(page)});
+}
+let naverMap=null,naverMarker=null,naverScriptLoading=false;
+function naverStatus(msg,type=''){const el=$('naverMapStatus');if(!el)return;el.className='notice map-status '+type;el.textContent=msg}
+function saveNaverClient(){const id=$('naverClientId')?.value.trim();if(!id)return naverStatus('NAVER Maps Client ID를 입력하세요.','error');localStorage.setItem('otc_naver_client_id',id);naverStatus('Client ID를 저장했습니다. [지도 불러오기]를 눌러 주세요.','success')}
+function naverAuthFailure(){naverStatus('NAVER 지도 인증에 실패했습니다. Client ID, Maps API 사용 설정, 웹 서비스 URL(https://engkjh-jaden.github.io)을 확인하세요.','error')}
+function createNaverMap(){
+  if(!window.naver?.maps){naverStatus('NAVER 지도 API가 아직 준비되지 않았습니다.','error');return false}
+  const el=$('naverMap');if(!el)return false;
+  const lat=parseFloat($('mapLat').value)||36.95, lng=parseFloat($('mapLng').value)||126.44;
+  naverMap=new naver.maps.Map(el,{center:new naver.maps.LatLng(lat,lng),zoom:15,mapTypeControl:true,zoomControl:true});
+  naverMarker=new naver.maps.Marker({position:new naver.maps.LatLng(lat,lng),map:naverMap});
+  naver.maps.Event.addListener(naverMap,'click',function(e){
+    const latlng=e.coord; $('mapLat').value=latlng.lat().toFixed(7); $('mapLng').value=latlng.lng().toFixed(7);
+    if(naverMarker)naverMarker.setPosition(latlng);
+    $('naverMapResult').innerHTML=`<div class="notice success">클릭 위치: 위도 ${latlng.lat().toFixed(7)} · 경도 ${latlng.lng().toFixed(7)}</div>`;
+    if(naver.maps.Service?.reverseGeocode){
+      naver.maps.Service.reverseGeocode({coords:latlng,orders:['roadaddr','addr']},function(status,response){
+        if(status===naver.maps.Service.Status.OK){
+          const r=response.v2?.results?.[0];
+          const a=r?.region||{},l=r?.land||{};
+          const address=[a.area1?.name,a.area2?.name,a.area3?.name,l.name,l.number1?(l.number1+(l.number2?'-'+l.number2:'')):'' ].filter(Boolean).join(' ');
+          if(address)$('naverMapResult').innerHTML+=`<div class="notice">추정 주소: ${esc(address)}</div>`;
+        }
+      });
+    }
+  });
+  naverStatus('NAVER 지도가 표시되었습니다. 지도를 클릭하면 좌표를 확인할 수 있습니다.','success');
+  return true;
+}
+function loadNaverMap(){
+  const id=$('naverClientId')?.value.trim()||localStorage.getItem('otc_naver_client_id')||'';
+  if(!id)return naverStatus('먼저 NAVER Maps Client ID를 입력하고 저장하세요.','error');
+  localStorage.setItem('otc_naver_client_id',id);
+  if(window.naver?.maps)return createNaverMap();
+  if(naverScriptLoading){naverStatus('NAVER 지도 API를 불러오는 중입니다. 잠시 기다려 주세요.');return}
+  naverScriptLoading=true;window.navermap_authFailure=naverAuthFailure;
+  const old=document.getElementById('naverMapsScript');if(old)old.remove();
+  const script=document.createElement('script');script.id='naverMapsScript';script.src='https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId='+encodeURIComponent(id)+'&submodules=geocoder';script.async=true;
+  script.onload=()=>{naverScriptLoading=false;createNaverMap()};script.onerror=()=>{naverScriptLoading=false;naverStatus('NAVER 지도 API 스크립트를 불러오지 못했습니다. Client ID와 웹 서비스 URL을 확인하세요.','error')};
+  document.head.appendChild(script);naverStatus('NAVER 지도 API를 불러오는 중입니다...');
+}
+function initNaverUi(){
+  const savedId=localStorage.getItem('otc_naver_client_id')||'';if($('naverClientId'))$('naverClientId').value=savedId;
+  $('saveNaverClientBtn')?.addEventListener('click',saveNaverClient);
+  $('loadNaverMapBtn')?.addEventListener('click',loadNaverMap);
+  $('testDaesanMapBtn')?.addEventListener('click',()=>{ $('mapLat').value='36.95';$('mapLng').value='126.44'; if(!naverMap)loadNaverMap(); else {const p=new naver.maps.LatLng(36.95,126.44);naverMap.setCenter(p);naverMap.setZoom(15);naverMarker?.setPosition(p)} });
+  $('centerMapBtn')?.addEventListener('click',()=>{if(!naverMap)return naverStatus('먼저 지도를 불러오세요.','error');const lat=parseFloat($('mapLat').value),lng=parseFloat($('mapLng').value);if(!Number.isFinite(lat)||!Number.isFinite(lng))return naverStatus('위도와 경도를 올바르게 입력하세요.','error');const p=new naver.maps.LatLng(lat,lng);naverMap.setCenter(p);naverMarker?.setPosition(p)});
+  $('geocodeBtn')?.addEventListener('click',()=>{if(!naverMap||!window.naver?.maps?.Service)return naverStatus('먼저 지도를 불러오세요.','error');const q=$('mapAddress').value.trim();if(!q)return naverStatus('검색할 주소를 입력하세요.','error');naver.maps.Service.geocode({query:q},function(status,response){if(status!==naver.maps.Service.Status.OK)return naverStatus('주소 검색에 실패했습니다. Geocoding 설정과 Client ID를 확인하세요.','error');const items=response.v2?.addresses||[];if(!items.length)return naverStatus('검색 결과가 없습니다.','warning');const a=items[0],lat=parseFloat(a.y),lng=parseFloat(a.x);$('mapLat').value=lat.toFixed(7);$('mapLng').value=lng.toFixed(7);const p=new naver.maps.LatLng(lat,lng);naverMap.setCenter(p);naverMap.setZoom(17);naverMarker?.setPosition(p);$('naverMapResult').innerHTML=`<div class="notice success">검색 결과: ${esc(a.roadAddress||a.jibunAddress||q)}<br>위도 ${lat.toFixed(7)} · 경도 ${lng.toFixed(7)}</div>`;});});
+  window._initNaverMapWhenReady=()=>{if(naverMap)naver.maps.Event.trigger(naverMap,'resize');};
+}
 async function loadProfile(u){let r=await sb.from('profiles').select('id,display_name,role').eq('id',u.id).maybeSingle();if(r.error)throw r.error;if(!r.data)throw new Error('프로필이 없습니다. 관리자에게 계정 등록을 요청하세요.');profile=r.data;$('roleBadge').textContent=profile.role==='admin'?'관리자':'봉사자';$('userEmail').textContent=u.email||''}function sections(){v14Sections()}
 async function login(){if(!sb&&!make())return;let email=$('loginEmail').value.trim(),password=$('loginPassword').value;if(!email||!password)return notice('이메일과 비밀번호를 입력하세요.','error');notice('로그인 중...');let r=await sb.auth.signInWithPassword({email,password});if(r.error)return notice(r.error.message,'error');user=r.data.user;try{await loadProfile(user);modes('loggedIn');sections();await refreshAll();notice('로그인되었습니다.','success')}catch(e){await sb.auth.signOut();user=null;profile=null;notice(e.message,'error')}}
 async function logout(){if(sb)await sb.auth.signOut();user=null;profile=null;recovery=false;$('appShell')?.classList.add('hidden');document.querySelectorAll('#pageRoot .page').forEach(x=>x.classList.remove('active'));$('authCard')?.classList.remove('hidden');$('configCard').classList.remove('hidden');modes('login');notice('로그아웃되었습니다.')}async function resetRequest(){if(!sb&&!make())return;let email=$('resetEmail').value.trim();if(!email)return notice('가입한 이메일 주소를 입력하세요.','error');notice('재설정 이메일을 보내는 중...');let redirectTo=SITE;let r=await sb.auth.resetPasswordForEmail(email,{redirectTo});if(r.error)return notice(friendly(r.error),'error');notice('재설정 이메일을 보냈습니다. 가장 최근에 받은 메일의 링크(버튼)를 한 번만 누르세요. 메일을 여러 번 요청했다면 이전 메일은 사용할 수 없습니다.','success')}

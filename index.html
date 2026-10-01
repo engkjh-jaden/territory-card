@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>온라인 구역 카드 v11</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><style>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>온라인 구역 카드 v12</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><style>
 :root{--p:#1769aa;--p2:#0f4f83;--bg:#f5f7fa;--b:#dbe2ea;--t:#1f2937;--m:#6b7280}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,sans-serif;line-height:1.55}header{background:linear-gradient(135deg,var(--p2),var(--p));color:#fff;padding:22px 16px}.wrap{max-width:980px;margin:auto;padding:0 14px}header h1{margin:0;font-size:23px}header p{margin:5px 0 0;opacity:.9;font-size:14px}main{padding:18px 0 50px}.card{background:#fff;border:1px solid var(--b);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px #00000008}h2{font-size:18px;margin:0 0 12px}h3{font-size:16px;margin:18px 0 8px}label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px}input,textarea,select{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff}textarea{min-height:82px;resize:vertical}button{border:0;border-radius:9px;padding:11px 14px;font:inherit;font-weight:700;cursor:pointer}.btn{background:var(--p);color:#fff}.btn:hover{background:var(--p2)}.secondary{background:#eef2f7;color:#26374a}.danger{background:#c62828;color:#fff}.small{padding:7px 10px;font-size:13px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{padding:11px 13px;border-radius:9px;background:#eef6ff;border:1px solid #cfe5ff;color:#164b78;margin:10px 0}.success{background:#edf8f1;border-color:#ccebd8;color:#17683c}.error{background:#fff1f1;border-color:#f0c7c7;color:#9d1c1c}.warning{background:#fff7e8;border-color:#f3dfb5;color:#855000}.hidden{display:none!important}.muted{color:var(--m);font-size:13px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e8f2fb;color:#155a8e;font-size:12px;font-weight:700}.territory{border:1px solid var(--b);border-radius:12px;padding:14px;margin:10px 0}.territory-title{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.territory-title strong{font-size:16px}.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.status-grid button{font-size:12px;background:#f1f5f9;color:#334155;border:1px solid var(--b)}.status-grid button.active{background:#1769aa;color:#fff;border-color:#1769aa}.maplink{display:inline-block;margin-top:8px;color:#1263a0;font-weight:700;text-decoration:none}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{padding:14px;border:1px solid var(--b);border-radius:12px;background:#fafcff}.stat b{display:block;font-size:25px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid var(--b);padding:9px 6px;text-align:left;vertical-align:top}th{background:#f8fafc}footer{color:#7a8491;font-size:12px;text-align:center;padding:18px}@media(max-width:650px){.row{grid-template-columns:1fr}.row3,.stats{grid-template-columns:1fr 1fr}.status-grid{grid-template-columns:1fr 1fr}header h1{font-size:20px}.card{padding:15px}}
 .tree-card{border:1px solid var(--b);border-radius:12px;padding:14px;margin:10px 0;background:#fbfdff}.tree-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.tree-head strong{font-size:15px}.mini{font-size:12px;color:var(--m)}.tag-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.tag-btn{background:#f1f5f9;border:1px solid var(--b);color:#334155;padding:8px 10px;font-size:12px}.tag-btn.active{background:#ffe5e5;border-color:#d32f2f;color:#a40000}.caution{display:inline-block;background:#ffe1e1;color:#a40000;border:1px solid #f2aaaa;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;margin:3px}.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.danger-outline{background:#fff1f1;color:#a40000;border:1px solid #f2b8b8}.admin-panel{border-top:2px solid #eef2f7;margin-top:18px;padding-top:4px}@media(max-width:650px){.form-grid{grid-template-columns:1fr}}
-.collab-card{border:2px solid #d7e7f7;background:#fbfdff}.join-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.participant-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.participant{padding:4px 8px;border-radius:999px;background:#eef5fb;font-size:12px}.household-card{border:1px solid var(--b);border-radius:12px;padding:12px;margin:8px 0;background:#fff}.household-head{display:flex;justify-content:space-between;gap:8px}.household-meta{font-size:12px;color:var(--m)}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e9b57;margin-right:5px}.warning-box{margin-top:8px;padding:9px 10px;border-radius:9px;background:#fff1f1;border:1px solid #f1c4c4;color:#a11919;font-weight:700}.mini-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.mini-actions button{padding:8px 9px;font-size:12px}.status-pill{padding:4px 8px;border-radius:999px;background:#eef2f7;font-size:12px;font-weight:700}.status-pill.visited{background:#eaf7ee;color:#17683c}.status-pill.absent{background:#fff7e8;color:#855000}.status-pill.refused{background:#fff0f0;color:#9d1c1c}@media(max-width:650px){.join-grid{grid-template-columns:1fr}}</style></head><body><header><div class="wrap"><h1>온라인 구역 카드</h1><p>전도 봉사용 모바일 웹앱 · v11 · 구역·세대·현장 특이사항·Excel 일괄 이관</p></div></header><main class="wrap">
+.collab-card{border:2px solid #d7e7f7;background:#fbfdff}.join-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.participant-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.participant{padding:4px 8px;border-radius:999px;background:#eef5fb;font-size:12px}.household-card{border:1px solid var(--b);border-radius:12px;padding:12px;margin:8px 0;background:#fff}.household-head{display:flex;justify-content:space-between;gap:8px}.household-meta{font-size:12px;color:var(--m)}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e9b57;margin-right:5px}.warning-box{margin-top:8px;padding:9px 10px;border-radius:9px;background:#fff1f1;border:1px solid #f1c4c4;color:#a11919;font-weight:700}.mini-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.mini-actions button{padding:8px 9px;font-size:12px}.status-pill{padding:4px 8px;border-radius:999px;background:#eef2f7;font-size:12px;font-weight:700}.status-pill.visited{background:#eaf7ee;color:#17683c}.status-pill.absent{background:#fff7e8;color:#855000}.status-pill.refused{background:#fff0f0;color:#9d1c1c}@media(max-width:650px){.join-grid{grid-template-columns:1fr}}</style></head><body><header><div class="wrap"><h1>온라인 구역 카드</h1><p>전도 봉사용 모바일 웹앱 · v12 · 구역·세대·현장 특이사항·Excel 일괄 이관</p></div></header><main class="wrap">
 <section id="configCard" class="card"><h2>처음 한 번만 연결 설정</h2><div class="notice">Supabase 정보를 입력하면 이 브라우저에만 저장됩니다. <b>service_role/secret 키는 절대 입력하지 마세요.</b></div><div class="row"><div><label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://xxxx.supabase.co"></div><div><label>Publishable / anon key</label><input id="supabaseKey" type="password" placeholder="sb_publishable_... 또는 anon key"></div></div><div class="actions"><button class="btn" id="saveConfigBtn">연결 정보 저장</button><button class="btn secondary" id="clearConfigBtn">저장 정보 삭제</button></div><div id="configMsg"></div></section>
 <section id="authCard" class="card"><h2>로그인</h2><div id="authNotice" class="notice hidden"></div><div id="loginView"><label>이메일</label><input id="loginEmail" type="email" autocomplete="email" placeholder="이메일 주소"><label>비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호"><div class="actions"><button class="btn" id="loginBtn">로그인</button><button class="btn secondary" id="showResetBtn">비밀번호를 잊으셨나요?</button></div></div>
 <div id="resetRequestView" class="hidden"><h3>비밀번호 재설정</h3><p class="muted">가입한 이메일 주소로 비밀번호 변경 링크를 보내드립니다.</p><label>이메일</label><input id="resetEmail" type="email" autocomplete="email" placeholder="가입한 이메일 주소"><div class="actions"><button class="btn" id="sendResetBtn">재설정 이메일 보내기</button><button class="btn secondary" id="backLoginBtn">로그인으로 돌아가기</button></div></div>
+
 <div id="changePasswordView" class="hidden"><h3>새 비밀번호 설정</h3><div class="notice success">비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.</div><label>새 비밀번호</label><input id="newPassword" type="password" autocomplete="new-password" placeholder="새 비밀번호"><label>새 비밀번호 확인</label><input id="newPassword2" type="password" autocomplete="new-password" placeholder="새 비밀번호를 한 번 더 입력"><div class="actions"><button class="btn" id="changePasswordBtn">비밀번호 변경</button><button class="btn secondary" id="cancelResetBtn">취소</button></div></div>
 <div id="loggedInView" class="hidden"><div class="topbar"><div><span class="badge" id="roleBadge">로그인됨</span> <b id="userEmail"></b></div><button class="btn danger small" id="logoutBtn">로그아웃</button></div></div></section>
 <section id="volunteerSection" class="card hidden"><div class="topbar"><h2>오늘의 공동 봉사 구역</h2><div class="actions" style="margin-top:0"><button class="btn secondary small" id="refreshVolunteerBtn">새로고침</button><button class="btn danger small" id="volunteerLogoutBtn">로그아웃</button></div></div><div class="notice">한 구역에 여러 봉사자가 함께 참여할 수 있습니다. 각자의 휴대전화에서 입력하면 같은 구역을 보고 있는 봉사자 화면에 최신 상태가 반영됩니다.</div><div id="openTerritoryList"></div><div id="joinedTerritoryList"></div><div id="collabHouseholds"></div><h3>최근 방문 기록</h3><div id="visitHistory"></div></section>
@@ -67,7 +68,7 @@
 </div>
 </div>
 </section>
-<section id="helpCard" class="card hidden"><h2>안내</h2><div class="notice warning">방문 기록에는 가능한 한 필요한 최소 정보만 입력하세요. 개인의 이름, 민감한 종교적 반응 등 불필요한 개인정보를 기록하지 않는 것을 권장합니다.</div><p class="muted">지도는 네이버 지도 검색 링크를 사용합니다. 구역 경계선(폴리곤)을 실제 지도 위에 표시하는 기능은 다음 단계에서 추가할 수 있습니다.</p></section></main><footer>온라인 구역 카드 v11 · 공동 참여 · 실시간 동기화</footer>
+<section id="helpCard" class="card hidden"><h2>안내</h2><div class="notice warning">방문 기록에는 가능한 한 필요한 최소 정보만 입력하세요. 개인의 이름, 민감한 종교적 반응 등 불필요한 개인정보를 기록하지 않는 것을 권장합니다.</div><p class="muted">지도는 네이버 지도 검색 링크를 사용합니다. 구역 경계선(폴리곤)을 실제 지도 위에 표시하는 기능은 다음 단계에서 추가할 수 있습니다.</p></section></main><footer>온라인 구역 카드 v12 · 공동 참여 · 실시간 동기화</footer>
 <script>
 (()=>{const SITE='https://engkjh-jaden.github.io/territory-card/';const DEFAULT='https://pgqaksnioioehsysjmxj.supabase.co';const DEFAULT_KEY='sb_publishable_Jthe6DTLwGj4WlrYIV97Gw_SSHuboDc';let sb=null,user=null,profile=null,recovery=false;const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const notice=(txt,type='')=>{const el=$('authNotice');if(!el){console.error('authNotice 요소를 찾을 수 없습니다.');return}el.className='notice '+(type||'');el.textContent=txt||'';el.classList.toggle('hidden',!txt)};const cfgmsg=(txt,type='')=>{$('configMsg').innerHTML=txt?`<div class="notice ${type}">${esc(txt)}</div>`:''};const saved=()=>({url:localStorage.getItem('otc_supabase_url')||DEFAULT,key:localStorage.getItem('otc_supabase_key')||DEFAULT_KEY});function make(){let c=saved();if(!c.key)return false;try{sb=window.supabase.createClient(c.url,c.key,{auth:{flowType:'implicit',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});return true}catch(e){cfgmsg(e.message,'error');return false}}function modes(m){const map={login:'loginView',resetRequest:'resetRequestView',changePassword:'changePasswordView',loggedIn:'loggedInView'};['loginView','resetRequestView','changePasswordView','loggedInView'].forEach(x=>{const el=$(x);if(el)el.classList.add('hidden')});const target=$(map[m]||m);if(target)target.classList.remove('hidden');else console.error('인증 화면을 찾을 수 없습니다:',m)}function statusLabel(s){return({not_visited:'미방문',visited:'방문',absent:'부재',return:'방문 거절',refused:'방문 거절'})[s]||s}function date(s){return s?new Date(s).toLocaleString('ko-KR'):''}
 async function loadProfile(u){let r=await sb.from('profiles').select('id,display_name,role').eq('id',u.id).maybeSingle();if(r.error)throw r.error;if(!r.data)throw new Error('프로필이 없습니다. 관리자에게 계정 등록을 요청하세요.');profile=r.data;$('roleBadge').textContent=profile.role==='admin'?'관리자':'봉사자';$('userEmail').textContent=u.email||''}function sections(){ $('configCard').classList.add('hidden');$('helpCard').classList.remove('hidden');$('volunteerSection').classList.remove('hidden');if(profile?.role==='admin')$('adminSection').classList.remove('hidden');else $('adminSection').classList.add('hidden')}
@@ -346,105 +347,64 @@ async function init(){
  $('supabaseUrl').value=c.url;
  $('supabaseKey').value=c.key;
  if(!make()){modes('login');return}
-
- /*
-  * 비밀번호 재설정은 Supabase의 표준 PASSWORD_RECOVERY 흐름만 사용합니다.
-  * v11에서 사용하던 수동 OTP 처리와 중간 확인 화면은
-  * 기본 Supabase Reset Password 메일(ConfirmationURL)과 중복되어 오류를 만들 수 있어 제거했습니다.
-  * 현재 앱은 client-only GitHub Pages이므로 implicit flow를 그대로 사용합니다.
-  */
  const hash=location.hash||'', search=location.search||'';
  const hp=new URLSearchParams(hash.replace(/^#/,'').replace(/^&/,''));
  const qp=new URLSearchParams(search);
- const hashType=hp.get('type'), queryType=qp.get('type');
- const isRecoveryLink=hashType==='recovery'||queryType==='recovery';
- const hasAuthError=!!(hp.get('error')||hp.get('error_code')||qp.get('error')||qp.get('error_code'));
- const errorCode=hp.get('error_code')||qp.get('error_code')||'';
- const errorDescription=hp.get('error_description')||qp.get('error_description')||'';
  const cleanUrl=()=>{try{history.replaceState(null,'',location.pathname)}catch(_){} };
- const waitForSession=async()=>{
-   for(let i=0;i<30;i++){
-     const r=await sb.auth.getSession();
-     if(r.data?.session)return r.data.session;
-     await new Promise(resolve=>setTimeout(resolve,200));
-   }
-   return null;
- };
- const showRecovery=async(session)=>{
-   const sess=session||await waitForSession();
-   if(!sess){
-     recovery=false;
-     cleanUrl();
-     modes('resetRequest');
-     return notice('재설정 인증 세션을 확인하지 못했습니다. 재설정 이메일을 다시 요청하고 가장 최근 메일의 링크를 한 번만 눌러 주세요.','error');
-   }
-   recovery=true;
-   user=sess.user;
-   cleanUrl();
-   modes('changePassword');
-   notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
- };
+ const recoveryFromUrl=hp.get('type')==='recovery';
+ if(recoveryFromUrl) recovery=true;
 
- /* Supabase는 인증 실패 정보도 redirect URL의 fragment/query에 돌려줄 수 있습니다. */
- if(hasAuthError){
+ /*
+  * Password recovery uses Supabase's standard client-side flow:
+  * resetPasswordForEmail() -> redirect back to this page -> PASSWORD_RECOVERY
+  * -> updateUser({password}). Do not manually consume token_hash here.
+  */
+ if(hp.get('error')||hp.get('error_code')){
    recovery=false;
+   const code=hp.get('error_code');
    cleanUrl();
    modes('resetRequest');
-   notice(errorCode==='otp_expired'
-     ? friendly({code:'otp_expired'})
-     : (errorDescription||'비밀번호 재설정 인증 중 오류가 발생했습니다.'),'error');
+   notice(code==='otp_expired'?friendly({code}):(hp.get('error_description')||'비밀번호 재설정 인증 중 오류가 발생했습니다.'),'error');
    return;
  }
 
- /*
-  * 반드시 listener를 먼저 등록합니다.
-  * 메일 링크를 클릭하면 Supabase가 세션을 만들고 PASSWORD_RECOVERY 이벤트를 발생시킵니다.
-  */
  sb.auth.onAuthStateChange((e,s)=>{
    if(e==='PASSWORD_RECOVERY'){
      recovery=true;
      user=s?.user||null;
-     setTimeout(()=>{
-       modes('changePassword');
-       notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
-     },0);
+     cleanUrl();
+     modes('changePassword');
+     notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
      return;
    }
    if(e==='SIGNED_OUT'){
-     user=null;
-     profile=null;
-     return;
+     user=null;profile=null;return;
    }
    if(s?.user&&!recovery){
      user=s.user;
      setTimeout(async()=>{
-       try{
-         await loadProfile(user);
-         modes('loggedIn');
-         sections();
-         await refreshAll();
-       }catch(x){notice(x.message,'error')}
+       try{await loadProfile(user);modes('loggedIn');sections();await refreshAll()}
+       catch(x){notice(x.message,'error')}
      },0);
    }
  });
 
- /* 메일 링크가 이미 세션으로 처리된 경우를 기다립니다. */
- if(isRecoveryLink){
-   recovery=true;
-   await showRecovery();
+ /* The Supabase client automatically detects the recovery redirect in the URL. */
+ const r=await sb.auth.getSession();
+ if(r.error){
+   console.error('getSession error:',r.error);
+ }
+ if(recovery && r.data?.session?.user){
+   user=r.data.session.user;
+   cleanUrl();
+   modes('changePassword');
+   notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
    return;
  }
-
- /* 일반 진입: 기존 로그인 세션이 있으면 정상적으로 앱을 엽니다. */
- const r=await sb.auth.getSession();
  if(r.data?.session?.user&&!recovery){
    user=r.data.session.user;
-   try{
-     await loadProfile(user);
-     modes('loggedIn');
-     sections();
-     await refreshAll();
-   }catch(x){notice(x.message,'error')}
+   try{await loadProfile(user);modes('loggedIn');sections();await refreshAll()}
+   catch(x){notice(x.message,'error')}
  }
 }init()})();
 </script></body></html>

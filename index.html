@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 
-<html lang="ko"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>온라인 구역 카드 v18</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><style>
+<html lang="ko"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>온라인 구역 카드 v19.1</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><style>
 :root{--p:#1769aa;--p2:#0f4f83;--bg:#f5f7fa;--b:#dbe2ea;--t:#1f2937;--m:#6b7280}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,sans-serif;line-height:1.55}header{background:linear-gradient(135deg,var(--p2),var(--p));color:#fff;padding:22px 16px}.wrap{max-width:980px;margin:auto;padding:0 14px}header h1{margin:0;font-size:23px}header p{margin:5px 0 0;opacity:.9;font-size:14px}main{padding:18px 0 50px}.card{background:#fff;border:1px solid var(--b);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px #00000008}h2{font-size:18px;margin:0 0 12px}h3{font-size:16px;margin:18px 0 8px}label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px}input,textarea,select{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff}textarea{min-height:82px;resize:vertical}button{border:0;border-radius:9px;padding:11px 14px;font:inherit;font-weight:700;cursor:pointer}.btn{background:var(--p);color:#fff}.btn:hover{background:var(--p2)}.secondary{background:#eef2f7;color:#26374a}.danger{background:#c62828;color:#fff}.small{padding:7px 10px;font-size:13px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{padding:11px 13px;border-radius:9px;background:#eef6ff;border:1px solid #cfe5ff;color:#164b78;margin:10px 0}.success{background:#edf8f1;border-color:#ccebd8;color:#17683c}.error{background:#fff1f1;border-color:#f0c7c7;color:#9d1c1c}.warning{background:#fff7e8;border-color:#f3dfb5;color:#855000}.danger-outline{background:#fff1f1;color:#a61b1b;border:1px solid #efb4b4}.archive-row{opacity:.9}.archive-badge{background:#f1f5f9;color:#64748b}.count-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.count-box{border:1px solid var(--b);border-radius:9px;padding:9px;background:#fafcff}.count-box b{display:block;font-size:18px}.modal-backdrop{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:16px;z-index:9999}.modal{background:#fff;border-radius:14px;max-width:620px;width:100%;padding:18px;box-shadow:0 12px 40px #0005}.hidden{display:none!important}.muted{color:var(--m);font-size:13px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e8f2fb;color:#155a8e;font-size:12px;font-weight:700}.territory{border:1px solid var(--b);border-radius:12px;padding:14px;margin:10px 0}.territory-title{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.territory-title strong{font-size:16px}.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.status-grid button{font-size:12px;background:#f1f5f9;color:#334155;border:1px solid var(--b)}.status-grid button.active{background:#1769aa;color:#fff;border-color:#1769aa}.maplink{display:inline-block;margin-top:8px;color:#1263a0;font-weight:700;text-decoration:none}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{padding:14px;border:1px solid var(--b);border-radius:12px;background:#fafcff}.stat b{display:block;font-size:25px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid var(--b);padding:9px 6px;text-align:left;vertical-align:top}th{background:#f8fafc}footer{color:#7a8491;font-size:12px;text-align:center;padding:18px}@media(max-width:650px){.row{grid-template-columns:1fr}.row3,.stats{grid-template-columns:1fr 1fr}.status-grid{grid-template-columns:1fr 1fr}header h1{font-size:20px}.card{padding:15px}}
 .tree-card{border:1px solid var(--b);border-radius:12px;padding:14px;margin:10px 0;background:#fbfdff}.tree-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.tree-head strong{font-size:15px}.mini{font-size:12px;color:var(--m)}.tag-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.tag-btn{background:#f1f5f9;border:1px solid var(--b);color:#334155;padding:8px 10px;font-size:12px}.tag-btn.active{background:#ffe5e5;border-color:#d32f2f;color:#a40000}.caution{display:inline-block;background:#ffe1e1;color:#a40000;border:1px solid #f2aaaa;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;margin:3px}.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.danger-outline{background:#fff1f1;color:#a40000;border:1px solid #f2b8b8}.admin-panel{border-top:2px solid #eef2f7;margin-top:18px;padding-top:4px}@media(max-width:650px){.form-grid{grid-template-columns:1fr}}
 .collab-card{border:2px solid #d7e7f7;background:#fbfdff}.join-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.participant-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.participant{padding:4px 8px;border-radius:999px;background:#eef5fb;font-size:12px}.household-card{border:1px solid var(--b);border-radius:12px;padding:12px;margin:8px 0;background:#fff}.household-head{display:flex;justify-content:space-between;gap:8px}.household-meta{font-size:12px;color:var(--m)}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e9b57;margin-right:5px}.warning-box{margin-top:8px;padding:9px 10px;border-radius:9px;background:#fff1f1;border:1px solid #f1c4c4;color:#a11919;font-weight:700}.mini-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.mini-actions button{padding:8px 9px;font-size:12px}.status-pill{padding:4px 8px;border-radius:999px;background:#eef2f7;font-size:12px;font-weight:700}.status-pill.visited{background:#eaf7ee;color:#17683c}.status-pill.absent{background:#fff7e8;color:#855000}.status-pill.refused{background:#fff0f0;color:#9d1c1c}@media(max-width:650px){.join-grid{grid-template-columns:1fr}}
 .vol-map-wrap{margin:10px 0 14px;border:1px solid var(--b);border-radius:12px;padding:10px;background:#fff}.vol-map-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.volunteer-map{height:300px}.vol-map-wrap .notice{margin:0 0 8px}.volunteer-compact .notice{display:none}@media(max-width:650px){.volunteer-map{height:280px}.vol-map-head button{padding:7px 9px;font-size:12px}}.app-shell{margin-top:12px}.app-nav{display:flex;gap:7px;overflow-x:auto;padding:6px 2px 10px;position:sticky;top:0;z-index:20;background:rgba(245,247,250,.96);backdrop-filter:blur(8px)}.app-nav button{white-space:nowrap;background:#fff;color:#334155;border:1px solid var(--b);padding:9px 11px;font-size:12px}.app-nav button.active{background:var(--p);color:#fff;border-color:var(--p)}.page{display:none}.page.active{display:block}.page-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.page-head h2{margin:0}.mobile-back{display:none}.home-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick-card{border:1px solid var(--b);border-radius:12px;padding:14px;background:#fff}.quick-card strong{display:block;font-size:15px}.map-test{height:420px;border-radius:12px;overflow:hidden;border:1px solid var(--b);background:#eef2f7}.map-status{margin-top:8px}.map-config{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.map-result{margin-top:10px}.map-marker-info{font-size:12px;line-height:1.45}.map-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.page-note{margin-bottom:12px}.nav-spacer{flex:1}.admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.admin-menu-card{padding:15px;border:1px solid var(--b);border-radius:12px;background:#fff}.admin-menu-card button{width:100%;margin-top:9px}.map-help{font-size:12px;color:var(--m);margin-top:8px}@media(max-width:650px){.home-grid,.admin-grid{grid-template-columns:1fr}.app-nav{top:0}.map-test{height:360px}.page-head .actions{width:100%}.page-head .actions button{flex:1}.map-config{grid-template-columns:1fr}}
-</style></head><body><header><div class="wrap"><h1>온라인 구역 카드</h1><p>전도 봉사용 모바일 웹앱 · v18 · 오늘의 구역 공동 봉사 · Excel · 지도</p></div></header><main class="wrap">
+
+.app-toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);width:min(92vw,520px);padding:13px 16px;border-radius:12px;background:#1f2937;color:#fff;box-shadow:0 10px 30px #0004;z-index:10000;font-weight:700;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}.app-toast.show{opacity:1;transform:translate(-50%,0)}.app-toast.success{background:#17683c}.app-toast.error{background:#a61b1b}.app-toast.warning{background:#855000}.volunteer-simple .app-nav{display:none!important}@media(max-width:650px){.app-toast{bottom:14px;font-size:14px}.volunteer-simple .app-nav{display:none!important}}
+</style></head><body><header><div class="wrap"><h1>온라인 구역 카드</h1><p>전도 봉사용 모바일 웹앱 · v18 · 오늘의 구역 공동 봉사 · Excel · 지도</p></div></header><main class="wrap"><div id="appToast" class="app-toast" role="status" aria-live="polite"></div>
 <section class="card" id="configCard"><h2>처음 한 번만 연결 설정</h2><div class="notice">Supabase 정보를 입력하면 이 브라우저에만 저장됩니다. <b>service_role/secret 키는 절대 입력하지 마세요.</b></div><div class="row"><div><label>Supabase Project URL</label><input id="supabaseUrl" placeholder="https://xxxx.supabase.co"/></div><div><label>Publishable / anon key</label><input id="supabaseKey" placeholder="sb_publishable_... 또는 anon key" type="password"/></div></div><div class="actions"><button class="btn" id="saveConfigBtn">연결 정보 저장</button><button class="btn secondary" id="clearConfigBtn">저장 정보 삭제</button></div><div id="configMsg"></div></section>
 <section class="card" id="authCard"><h2>로그인</h2><div class="notice hidden" id="authNotice"></div><div id="loginView"><label>이메일</label><input autocomplete="email" id="loginEmail" placeholder="이메일 주소" type="email"/><label>비밀번호</label><input autocomplete="current-password" id="loginPassword" placeholder="비밀번호" type="password"/><div class="actions"><button class="btn" id="loginBtn">로그인</button><button class="btn secondary" id="showResetBtn">비밀번호를 잊으셨나요?</button></div></div>
 <div class="hidden" id="resetRequestView"><h3>비밀번호 재설정</h3><p class="muted">가입한 이메일 주소로 비밀번호 변경 링크를 보내드립니다.</p><label>이메일</label><input autocomplete="email" id="resetEmail" placeholder="가입한 이메일 주소" type="email"/><div class="actions"><button class="btn" id="sendResetBtn">재설정 이메일 보내기</button><button class="btn secondary" id="backLoginBtn">로그인으로 돌아가기</button></div></div>
@@ -69,9 +71,9 @@
 </div></section><section class="page card" id="naverMapPage"><div class="page-head"><h2>📍 NAVER 지도 테스트</h2><button class="btn secondary small" id="backNaverMapHomeBtn">← 관리자 홈</button></div><div class="notice warning">NAVER 지도 API v3의 최신 방식인 <b>ncpKeyId</b>를 사용합니다. Client ID와 웹 서비스 URL 등록이 필요합니다.</div><div class="map-config"><div><label>NAVER Maps Client ID (ncpKeyId)</label><input id="naverClientId" placeholder="예: abcdefghijklmnopqrst" type="text"/></div><button class="btn" id="saveNaverClientBtn">Client ID 저장</button></div><h3>등록된 구역 지도</h3><div class="row"><div><label>구역</label><select id="mapTerritory"><option value="">구역 선택</option></select></div><div><label>지도 표시</label><button class="btn" id="loadTerritoryMarkersBtn" style="width:100%">구역 마커 불러오기</button></div></div><div class="notice">Excel을 처음 이관하거나 수정본을 다시 이관하면 건물 주소의 좌표를 자동으로 저장합니다. 좌표가 없는 건물만 NAVER Geocoding을 사용합니다.</div><div class="map-actions"><button class="btn" id="loadNaverMapBtn">지도 불러오기</button><button class="btn secondary" id="testDaesanMapBtn">서산 대산 테스트</button><button class="btn secondary" id="centerMapBtn">현재 좌표로 이동</button></div><div class="row"><div><label>위도</label><input id="mapLat" placeholder="36.9420" step="any" type="number"/></div><div><label>경도</label><input id="mapLng" placeholder="126.4380" step="any" type="number"/></div></div><div><label>주소 → 좌표 테스트 (Geocoder)</label><input id="mapAddress" placeholder="예: 충청남도 서산시 대산읍 ..."/></div><button class="btn secondary" id="geocodeBtn">주소 검색</button><div class="notice map-status" id="naverMapStatus">Client ID를 저장한 뒤 [지도 불러오기]를 누르세요.</div><div class="map-test" id="naverMap"></div><div class="map-result" id="naverMapResult"></div><div class="map-help">테스트 지도에서 클릭한 위치의 위도·경도를 확인하고, 주소 검색 결과를 확인할 수 있습니다. Excel에서 이관된 건물 좌표와 마커를 불러올 수 있습니다. 세대/현관 위치는 필요할 때 별도로 저장할 수 있습니다.</div></section><section class="page card" id="helpCard"><div class="page-head"><h2>안내</h2><button class="btn secondary small" id="backHelpBtn">← 이전 화면</button></div><div class="notice warning">방문 기록에는 가능한 한 필요한 최소 정보만 입력하세요. 개인의 이름, 민감한 종교적 반응 등 불필요한 개인정보를 기록하지 않는 것을 권장합니다.</div><p class="muted">지도는 네이버 지도 검색 링크를 사용합니다. 구역 경계선(폴리곤)을 실제 지도 위에 표시하는 기능은 다음 단계에서 추가할 수 있습니다. NAVER 지도 테스트는 관리자 메뉴에서 Client ID를 입력해 확인할 수 있습니다.</p></section></div></div>
 
 
-</main><footer>온라인 구역 카드 v18 · 오늘의 구역 공동 봉사 · Excel · NAVER 지도</footer>
+</main><footer>온라인 구역 카드 v19 · 오늘의 구역 공동 봉사 · Excel · NAVER 지도</footer>
 <script>
-(()=>{const SITE='https://engkjh-jaden.github.io/territory-card/';const DEFAULT='https://pgqaksnioioehsysjmxj.supabase.co';const DEFAULT_KEY='sb_publishable_Jthe6DTLwGj4WlrYIV97Gw_SSHuboDc';let sb=null,user=null,profile=null,recovery=false;const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const notice=(txt,type='')=>{const el=$('authNotice');if(!el){console.error('authNotice 요소를 찾을 수 없습니다.');return}el.className='notice '+(type||'');el.textContent=txt||'';el.classList.toggle('hidden',!txt)};const cfgmsg=(txt,type='')=>{$('configMsg').innerHTML=txt?`<div class="notice ${type}">${esc(txt)}</div>`:''};const saved=()=>({url:localStorage.getItem('otc_supabase_url')||DEFAULT,key:localStorage.getItem('otc_supabase_key')||DEFAULT_KEY});function make(){let c=saved();if(!c.key)return false;try{sb=window.supabase.createClient(c.url,c.key,{auth:{flowType:'implicit',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});return true}catch(e){cfgmsg(e.message,'error');return false}}function modes(m){const map={login:'loginView',resetRequest:'resetRequestView',changePassword:'changePasswordView',loggedIn:'loggedInView'};['loginView','resetRequestView','changePasswordView','loggedInView'].forEach(x=>{const el=$(x);if(el)el.classList.add('hidden')});const target=$(map[m]||m);if(target)target.classList.remove('hidden');else console.error('인증 화면을 찾을 수 없습니다:',m)}function statusLabel(s){return({not_visited:'미방문',visited:'방문',absent:'부재',return:'방문 거절',refused:'방문 거절'})[s]||s}function date(s){return s?new Date(s).toLocaleString('ko-KR'):''}function todayISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+(()=>{const SITE='https://engkjh-jaden.github.io/territory-card/';const DEFAULT='https://pgqaksnioioehsysjmxj.supabase.co';const DEFAULT_KEY='sb_publishable_Jthe6DTLwGj4WlrYIV97Gw_SSHuboDc';const NAVER_CLIENT_ID='7ei3uk60i3'; /* NAVER Maps Client ID */let sb=null,user=null,profile=null,recovery=false;let initialPageSet=false;let authApplyInProgress=false;const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const notice=(txt,type='')=>{const el=$('appToast');if(!el){console.error(txt);return}clearTimeout(window.__otcNoticeTimer);el.className='app-toast '+(type||'');el.textContent=txt||'';if(txt){requestAnimationFrame(()=>el.classList.add('show'));window.__otcNoticeTimer=setTimeout(()=>{el.classList.remove('show');setTimeout(()=>{if(!el.classList.contains('show'))el.textContent=''},220)},type==='error'?5000:3200)}else{el.classList.remove('show')}};const cfgmsg=(txt,type='')=>{$('configMsg').innerHTML=txt?`<div class="notice ${type}">${esc(txt)}</div>`:''};const saved=()=>({url:localStorage.getItem('otc_supabase_url')||DEFAULT,key:localStorage.getItem('otc_supabase_key')||DEFAULT_KEY});function make(){let c=saved();if(!c.key)return false;try{sb=window.supabase.createClient(c.url,c.key,{auth:{flowType:'implicit',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});return true}catch(e){cfgmsg(e.message,'error');return false}}function modes(m){const map={login:'loginView',resetRequest:'resetRequestView',changePassword:'changePasswordView',loggedIn:'loggedInView'};['loginView','resetRequestView','changePasswordView','loggedInView'].forEach(x=>{const el=$(x);if(el)el.classList.add('hidden')});const target=$(map[m]||m);if(target)target.classList.remove('hidden');else console.error('인증 화면을 찾을 수 없습니다:',m)}function statusLabel(s){return({not_visited:'미방문',visited:'방문',absent:'부재',return:'방문 거절',refused:'방문 거절'})[s]||s}function date(s){return s?new Date(s).toLocaleString('ko-KR'):''}function todayISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function showPage(id){
   const el=$(id);
   if(!el)return;
@@ -85,20 +87,21 @@ function v14Sections(){
   const shell=$('appShell');
   if(!shell)return;
   shell.classList.remove('hidden');
-  $('configCard')?.classList.add('hidden');
-  $('authCard')?.classList.add('hidden');
+  $('configCard')?.classList.toggle('hidden',!!profile);
+  $('authCard')?.classList.toggle('hidden',!!profile);
   const adminRole=profile?.role==='admin';
+  shell.classList.toggle('volunteer-simple',!adminRole);
   document.querySelectorAll('.nav-vol').forEach(x=>x.classList.toggle('hidden',adminRole));
   document.querySelectorAll('.nav-admin').forEach(x=>x.classList.toggle('hidden',!adminRole));
-  // 봉사자에게는 현장에 필요한 메뉴만 표시
-  document.querySelectorAll('.volunteer-optional').forEach(x=>x.classList.toggle('hidden',adminRole || !profile));
-  if(!adminRole){
-    document.querySelector('[data-page="volunteerHistoryPage"]')?.classList.add('hidden');
-    document.querySelector('[data-page="helpCard"]')?.classList.add('hidden');
+  // 안내 메뉴는 계정 전환 후에도 역할에 맞게 항상 다시 계산합니다.
+  document.querySelector('[data-page="helpCard"]')?.classList.remove('hidden');
+  if(!initialPageSet){
+    document.querySelectorAll('#pageRoot .page').forEach(x=>x.classList.remove('active'));
+    showPage(adminRole?'adminHomePage':'volunteerHomePage');
+    initialPageSet=true;
   }
-  document.querySelectorAll('#pageRoot .page').forEach(x=>x.classList.remove('active'));
-  showPage(adminRole?'adminHomePage':'volunteerHomePage');
 }
+
 function v14NavSetup(){
   document.querySelectorAll('#appNav [data-page]').forEach(btn=>btn.addEventListener('click',()=>showPage(btn.dataset.page)));
   $('leaveCurrentDailyBtn')?.addEventListener('click',()=>{if(currentDailyTerritory)leaveDailyTerritory(currentDailyTerritory.id)});
@@ -141,8 +144,8 @@ function createNaverMap(){
   return true;
 }
 function loadNaverMap(){
-  const id=$('naverClientId')?.value.trim()||localStorage.getItem('otc_naver_client_id')||'';
-  if(!id)return naverStatus('먼저 NAVER Maps Client ID를 입력하고 저장하세요.','error');
+  const id=NAVER_CLIENT_ID.trim()||$('naverClientId')?.value.trim()||localStorage.getItem('otc_naver_client_id')||'';
+  if(!id)return naverStatus('NAVER Maps Client ID가 설정되어 있지 않습니다. 관리자에게 확인하세요.','error');
   localStorage.setItem('otc_naver_client_id',id);
   if(window.naver?.maps)return createNaverMap();
   if(naverScriptLoading){naverStatus('NAVER 지도 API를 불러오는 중입니다. 잠시 기다려 주세요.');return}
@@ -172,7 +175,7 @@ async function loadMapTerritoryOptions(){
 function ensureNaverApi(){
   return new Promise((resolve,reject)=>{
     if(window.naver?.maps?.Service)return resolve();
-    const id=localStorage.getItem('otc_naver_client_id')||'';
+    const id=NAVER_CLIENT_ID.trim()||localStorage.getItem('otc_naver_client_id')||'';
     if(!id)return reject(new Error('NAVER Maps Client ID가 저장되어 있지 않습니다. 지도 테스트에서 먼저 저장하세요.'));
     if(naverScriptLoading){const wait=setInterval(()=>{if(window.naver?.maps?.Service){clearInterval(wait);resolve();}},100);setTimeout(()=>{clearInterval(wait);reject(new Error('NAVER 지도 API 로딩 시간 초과'))},10000);return}
     naverScriptLoading=true;window.navermap_authFailure=()=>{};
@@ -265,7 +268,7 @@ async function refreshVolunteer(){
   document.querySelectorAll('[data-leave]').forEach(b=>b.onclick=()=>leaveDailyTerritory(b.dataset.leave));
   document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openCollaborativeTerritory(b.dataset.open));
   if(currentDailyTerritory && joined.has(currentDailyTerritory.id)) await loadCollaborativeHouseholds(currentDailyTerritory.id);
-  await history();
+  await loadVisitHistory();
  }catch(e){console.error(e);notice(e.message||e,'error')}
 }
 async function openCollaborativeTerritory(id){const r=await sb.from('daily_territories').select('id,service_date,territory_id,note,is_active,territories(id,territory_no,name,description)').eq('id',id).maybeSingle();if(r.error)return notice(r.error.message,'error');if(!r.data)return notice('공동 봉사 구역을 찾을 수 없습니다.','error');if(!r.data.is_active)return notice('이 공동 봉사 구역은 이미 종료되었습니다.','error');const p=await sb.from('territory_participants').select('id,status').eq('daily_territory_id',id).eq('user_id',user.id).maybeSingle();if(p.error)return notice(p.error.message,'error');if(!p.data||p.data.status!=='active')return notice('먼저 이 구역에 참여해 주세요.','error');currentDailyTerritory=r.data;showPage('volunteerTerritoryPage');await loadCollaborativeHouseholds(id);subscribeRealtime(id);}
@@ -285,8 +288,8 @@ function addVolunteerMarker(row,status){
 }
 async function loadVolunteerMap(){
   const el=$('volunteerMap'); if(!el||!currentDailyTerritory)return;
-  const clientId=localStorage.getItem('otc_naver_client_id')||'';
-  if(!clientId){volunteerMapStatus('관리자가 NAVER Maps Client ID를 먼저 설정해야 지도를 사용할 수 있습니다.','warning');return;}
+  const clientId=NAVER_CLIENT_ID.trim()||localStorage.getItem('otc_naver_client_id')||'';
+  if(!clientId){volunteerMapStatus('NAVER 지도 Client ID가 앱에 설정되지 않았습니다. 관리자에게 앱 설정을 요청하세요.','warning');return;}
   try{
     await ensureNaverApi();
     const first=currentHouseholds.find(h=>Number.isFinite(Number(h.latitude??h.buildings?.latitude))&&Number.isFinite(Number(h.longitude??h.buildings?.longitude)));
@@ -316,7 +319,7 @@ async function loadCollaborativeHouseholds(dailyId){
 }
 async function updateHouseholdStatus(hid,status,dailyId){if(!currentDailyTerritory?.is_active)return notice('이 공동 봉사 구역은 이미 종료되었습니다.','error');const existing=await sb.from('household_current_status').select('status').eq('household_id',hid).eq('cycle_id',currentCycle.id).maybeSingle();if(existing.error)return notice(existing.error.message,'error');if(existing.data?.status===status)return notice('현재 상태와 같습니다. 새로운 방문 기록을 만들지 않았습니다.','success');let payload={household_id:hid,territory_id:currentDailyTerritory.territory_id,cycle_id:currentCycle.id,status,updated_by:user.id,updated_at:new Date().toISOString()};let r=await sb.from('household_current_status').upsert(payload,{onConflict:'household_id,cycle_id'});if(r.error)return notice(r.error.message,'error');let h=await sb.from('household_visit_records').insert({household_id:hid,territory_id:currentDailyTerritory.territory_id,daily_territory_id:dailyId,cycle_id:currentCycle.id,user_id:user.id,status});if(h.error)return notice(h.error.message,'error');notice('방문 상태가 저장되었습니다.','success');await loadCollaborativeHouseholds(dailyId);}
 function subscribeRealtime(dailyId){if(realtimeChannel)sb.removeChannel(realtimeChannel);realtimeChannel=sb.channel('territory-'+dailyId).on('postgres_changes',{event:'*',schema:'public',table:'household_current_status',filter:`territory_id=eq.${currentDailyTerritory.territory_id}`},()=>{if(currentDailyTerritory)loadCollaborativeHouseholds(dailyId)}).on('postgres_changes',{event:'UPDATE',schema:'public',table:'daily_territories',filter:`id=eq.${dailyId}`},async payload=>{if(payload.new?.is_active===false){if(realtimeChannel){await sb.removeChannel(realtimeChannel);realtimeChannel=null}currentDailyTerritory=null;showPage('volunteerHomePage');notice('관리자가 오늘 공동 봉사를 종료했습니다. 방문 기록은 보존됩니다.','success');await refreshVolunteer()}}).on('postgres_changes',{event:'*',schema:'public',table:'territory_participants',filter:`daily_territory_id=eq.${dailyId}`},()=>{if(currentDailyTerritory)refreshVolunteer()}).subscribe()}
-async function history(){let r=await sb.from('household_visit_records').select('status,created_at,households(household_name),territories(territory_no,name)').eq('user_id',user.id).order('created_at',{ascending:false}).limit(30);if(r.error)return;if(!r.data?.length){$('visitHistory').innerHTML='<p class="muted">아직 방문 기록이 없습니다.</p>';return}$('visitHistory').innerHTML='<table><thead><tr><th>구역</th><th>세대</th><th>상태</th><th>시간</th></tr></thead><tbody>'+r.data.map(v=>`<tr><td>${esc(v.territories?.territory_no)} · ${esc(v.territories?.name)}</td><td>${esc(v.households?.household_name||'')}</td><td>${esc(statusLabel(v.status))}</td><td>${esc(date(v.created_at))}</td></tr>`).join('')+'</tbody></table>'}
+async function loadVisitHistory(){let r=await sb.from('household_visit_records').select('status,created_at,households(household_name),territories(territory_no,name)').eq('user_id',user.id).order('created_at',{ascending:false}).limit(30);if(r.error)return;if(!r.data?.length){$('visitHistory').innerHTML='<p class="muted">아직 방문 기록이 없습니다.</p>';return}$('visitHistory').innerHTML='<table><thead><tr><th>구역</th><th>세대</th><th>상태</th><th>시간</th></tr></thead><tbody>'+r.data.map(v=>`<tr><td>${esc(v.territories?.territory_no)} · ${esc(v.territories?.name)}</td><td>${esc(v.households?.household_name||'')}</td><td>${esc(statusLabel(v.status))}</td><td>${esc(date(v.created_at))}</td></tr>`).join('')+'</tbody></table>'}
 async function admin(){
  if(profile?.role!=='admin')return;
  let[t,p,d,a]=await Promise.all([
@@ -336,9 +339,9 @@ async function admin(){
  document.querySelectorAll('[data-archive-territory]').forEach(b=>b.onclick=()=>archiveTerritory(b.dataset.archiveTerritory));
  document.querySelectorAll('[data-restore-territory]').forEach(b=>b.onclick=()=>restoreTerritory(b.dataset.restoreTerritory));
  document.querySelectorAll('[data-delete-territory]').forEach(b=>b.onclick=()=>permanentlyDeleteTerritory(b.dataset.deleteTerritory));
- document.querySelectorAll('[data-close-daily]').forEach(b=>b.onclick=()=>closeDailyTerritory(b.dataset.closeDaily));
  let part=ds.length?await sb.from('territory_participants').select('daily_territory_id,user_id,status,joined_at,profiles(display_name)').in('daily_territory_id',ds.map(x=>x.id)): {data:[],error:null};if(part.error)return notice(part.error.message,'error');let ps=part.data||[];
  $('adminDailyTerritories').innerHTML=ds.length?'<table><thead><tr><th>구역</th><th>상태</th><th>참여자</th><th>설명</th><th>관리</th></tr></thead><tbody>'+ds.map(x=>{let people=ps.filter(z=>z.daily_territory_id===x.id&&z.status==='active');return`<tr><td>${esc(x.territories?.territory_no)} · ${esc(x.territories?.name)}</td><td>${x.is_active?'<span class="badge">진행 중</span>':'<span class="badge archive-badge">종료</span>'}</td><td>${people.length}명<br>${people.map(z=>esc(z.profiles?.display_name||'봉사자')).join(', ')||'아직 없음'}</td><td>${esc(x.note||'')}</td><td>${x.is_active?`<button class="btn danger small" data-close-daily="${x.id}">🔒 구역 닫기</button>`:'<span class="muted">종료됨</span>'}</td></tr>`}).join('')+'</tbody></table>':'<p class="muted">오늘 공동 봉사 구역이 없습니다.</p>';
+ $('adminDailyTerritories').onclick=e=>{const b=e.target.closest('[data-close-daily]');if(b)closeDailyTerritory(b.dataset.closeDaily)};
  $('adminAssignments').innerHTML=a.data?.length?'<table><thead><tr><th>구역</th><th>봉사자</th><th>상태</th><th>배정일</th></tr></thead><tbody>'+a.data.map(x=>`<tr><td>${esc(x.territories?.territory_no)} · ${esc(x.territories?.name)}</td><td>${esc(x.profiles?.display_name||x.user_id)}</td><td>${esc(x.status)}</td><td>${esc(date(x.assigned_at))}</td></tr>`).join('')+'</tbody></table>':'<p class="muted">기존 배정 기록이 없습니다.</p>';
 }
 async function archiveTerritory(id){
@@ -406,7 +409,7 @@ async function openDailyTerritory(){
 window._legacyWorkbookData=[];
 const legacyClean=v=>String(v??'').replace(/\s+/g,' ').trim();
 const legacyNorm=v=>legacyClean(v).toLowerCase();
-const legacyInt=v=>{const n=Number(String(v??'').replace(/,/g,''));return Number.isFinite(n)?n:null};
+const legacyInt=v=>{const s=String(v??'').trim();if(!s)return null;const n=Number(s.replace(/,/g,''));return Number.isFinite(n)?n:null};
 const legacyIsFloor=v=>/^\s*\d+(?:\s*,\s*\d+)*\s*층\s*$/.test(legacyClean(v));
 const legacyLooksEntrance=v=>{const x=legacyClean(v);return !!x && !legacyIsFloor(x) && (x.includes('현관')||x.includes('라인')||x.includes('좌측')||x.includes('우측')||x.includes('입구')||x.includes('같은 집')||x.includes('시장'))};
 function legacyHeaders(rows){
@@ -648,7 +651,7 @@ async function addFieldNote(){
  document.querySelectorAll('.tag-btn').forEach(b=>b.classList.remove('active'));$('fieldNoteContent').value='';
  notice('현장 특이사항이 저장되었습니다.','success');await loadFieldNotes();
 }
-async function refreshAll(){v14Sections();await refreshVolunteer();await history();if(profile?.role==='admin'){await admin();await loadStructure();await loadMapTerritoryOptions()}}
+async function refreshAll(){v14Sections();await refreshVolunteer();await loadVisitHistory();if(profile?.role==='admin'){await admin();await loadStructure();await loadMapTerritoryOptions()}}
 $('saveConfigBtn').onclick=()=>{let u=$('supabaseUrl').value.trim().replace(/\/+$/,''),k=$('supabaseKey').value.trim();if(!u||!k)return cfgmsg('Supabase URL과 Publishable/anon key를 모두 입력하세요.','error');if(/service_role|secret/i.test(k))return cfgmsg('service_role/secret 키는 사용할 수 없습니다. Publishable/anon key를 입력하세요.','error');localStorage.setItem('otc_supabase_url',u);localStorage.setItem('otc_supabase_key',k);if(make()){modes('login');cfgmsg('연결 정보 저장 완료.','success')}};$('clearConfigBtn').onclick=()=>{localStorage.removeItem('otc_supabase_url');localStorage.removeItem('otc_supabase_key');location.reload()};$('loginBtn').onclick=login;$('loginPassword').onkeydown=e=>{if(e.key==='Enter')login()};$('showResetBtn').onclick=()=>{$('resetEmail').value=$('loginEmail').value.trim();modes('resetRequest');};$('backLoginBtn').onclick=()=>modes('login');$('sendResetBtn').onclick=resetRequest;$('changePasswordBtn').onclick=changePassword;$('cancelResetBtn').onclick=()=>{recovery=false;if(sb)sb.auth.signOut();modes('login')};$('logoutBtn').onclick=logout;$('volunteerLogoutBtn').onclick=logout;$('adminLogoutBtn').onclick=logout;$('refreshVolunteerBtn').onclick=refreshVolunteer;$('refreshAdminBtn').onclick=admin;$('addTerritoryBtn').onclick=addTerritory;/* legacy manual assignment UI was removed; keep the old function harmlessly unused */$('openDailyTerritoryBtn').onclick=openDailyTerritory;$('addBuildingBtn').onclick=addBuilding;$('addEntranceBtn').onclick=addEntrance;$('addHouseholdBtn').onclick=addHousehold;$('addFieldNoteBtn').onclick=addFieldNote;$('previewLegacyBtn').onclick=previewLegacy;$('runLegacyImportBtn').onclick=runLegacyImport;v14NavSetup();initNaverUi();$('volunteerMapRefreshBtn')?.addEventListener('click',loadVolunteerMap);document.querySelectorAll('.tag-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tag-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
 async function init(){
  let c=saved();
@@ -658,7 +661,7 @@ async function init(){
  const hash=location.hash||'', search=location.search||'';
  const hp=new URLSearchParams(hash.replace(/^#/,'').replace(/^&/,''));
  const qp=new URLSearchParams(search);
- const cleanUrl=()=>{try{history.replaceState(null,'',location.pathname)}catch(_){} };
+ const cleanUrl=()=>{try{window.history.replaceState(null,'',location.pathname)}catch(_){} };
  const recoveryFromUrl=hp.get('type')==='recovery';
  if(recoveryFromUrl) recovery=true;
 
@@ -686,13 +689,24 @@ async function init(){
      return;
    }
    if(e==='SIGNED_OUT'){
-     user=null;profile=null;return;
+     user=null;profile=null;initialPageSet=false;authApplyInProgress=false;
+     document.querySelectorAll('#pageRoot .page').forEach(x=>x.classList.remove('active'));
+     return;
    }
-   if(s?.user&&!recovery){
-     user=s.user;
+   // INITIAL_SESSION / TOKEN_REFRESHED에서는 화면을 다시 초기화하지 않습니다.
+   // 로그인 진입은 getSession() 또는 SIGNED_IN에서 한 번만 처리합니다.
+   if(e==='SIGNED_IN' && s?.user && !recovery){
+     if(profile?.id===s.user.id || authApplyInProgress)return;
+     authApplyInProgress=true;
      setTimeout(async()=>{
-       try{await loadProfile(user);modes('loggedIn');sections();await refreshAll()}
-       catch(x){notice(x.message,'error')}
+       try{
+         user=s.user;
+         await loadProfile(user);
+         modes('loggedIn');
+         sections();
+         await refreshAll();
+       }catch(x){notice(x.message,'error')}
+       finally{authApplyInProgress=false}
      },0);
    }
  });
@@ -709,10 +723,12 @@ async function init(){
    notice('비밀번호 재설정 인증이 완료되었습니다. 새 비밀번호를 입력하세요.','success');
    return;
  }
- if(r.data?.session?.user&&!recovery){
+ if(r.data?.session?.user&&!recovery && !profile && !authApplyInProgress){
    user=r.data.session.user;
+   authApplyInProgress=true;
    try{await loadProfile(user);modes('loggedIn');sections();await refreshAll()}
    catch(x){notice(x.message,'error')}
+   finally{authApplyInProgress=false}
  }
 }init()})();
 </script></body></html>

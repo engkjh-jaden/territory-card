@@ -61,8 +61,8 @@
 <div class="actions"><button class="btn" id="addFieldNoteBtn">특이사항 저장</button></div><div id="fieldNoteList"></div>
 </div></section><section class="page card" id="adminExcelPage"><div class="page-head"><h2>📥 Excel 이관</h2><button class="btn secondary small" id="backAdminHomeBtn2">← 관리자 홈</button></div><div class="admin-panel">
 <h3>📥 기존 Excel 구역 데이터 일괄 이관</h3>
-<div class="notice warning"><b>기존 데이터를 삭제하지 않고 복사합니다.</b> Excel의 여러 파일과 여러 시트를 한 번에 선택할 수 있습니다. 먼저 미리보기로 구역·건물·방문 대상을 확인한 뒤 가져오세요.<br><b>새 구역으로 가져오기</b>를 선택하면 각 시트의 이름 전체를 그대로 새 구역명으로 사용합니다.</div>
-<div class="form-grid"><div><label>Excel 파일</label><input accept=".xlsx,.xls,.csv" id="legacyExcelFiles" multiple="" type="file"/></div><div><label>가져오기 방식</label><select id="legacyImportMode"><option value="update">기존 구역 업데이트 — 같은 원본 행 수정, 방문 기록 유지</option><option value="safe">신규 데이터만 추가 — 기존 구조는 수정하지 않음</option><option value="new_territory">새 구역으로 가져오기 — 시트명을 새 구역명으로 사용</option></select></div><div><label> </label><button class="btn" id="previewLegacyBtn" style="width:100%">파일 분석 / 변경사항 미리보기</button></div></div>
+<div class="notice warning"><b>기존 데이터를 삭제하지 않고 복사합니다.</b> Excel의 여러 파일과 여러 시트를 한 번에 선택할 수 있습니다. 먼저 미리보기로 구역·건물·방문 대상을 확인한 뒤 가져오세요.</div>
+<div class="form-grid"><div><label>Excel 파일</label><input accept=".xlsx,.xls,.csv" id="legacyExcelFiles" multiple="" type="file"/></div><div><label>가져오기 방식</label><select id="legacyImportMode"><option value="update">기존 구역 업데이트 — 같은 원본 행 수정, 방문 기록 유지</option><option value="safe">신규 데이터만 추가 — 기존 구조는 수정하지 않음</option></select></div><div><label> </label><button class="btn" id="previewLegacyBtn" style="width:100%">파일 분석 / 변경사항 미리보기</button></div></div>
 <div class="hidden" id="legacyPreview"></div>
 <div class="actions"><button class="btn" disabled="" id="runLegacyImportBtn">변경사항 적용 / Excel 가져오기</button></div>
 <div id="legacyImportResult"></div>
@@ -262,7 +262,7 @@ async function loadCollaborativeHouseholds(dailyId){
  let d=await sb.from('daily_territories').select('territory_id,territories(id,territory_no,name)').eq('id',dailyId).single();if(d.error)return notice(d.error.message,'error');
  let q=await sb.from('households').select('id,household_name,address,visit_order,description,building_id,entrance_id,buildings!inner(id,territory_id,building_name,building_type)').eq('buildings.territory_id',d.data.territory_id).order('visit_order');if(q.error)return notice(q.error.message,'error');currentHouseholds=q.data||[];
  let ids=currentHouseholds.map(x=>x.id);let st=ids.length?await sb.from('household_current_status').select('household_id,status,updated_by,updated_at,profiles(display_name)').eq('cycle_id',currentCycle.id).in('household_id',ids):{data:[],error:null};if(st.error)return notice(st.error.message,'error');let sm=new Map((st.data||[]).map(x=>[x.household_id,x]));
- let notes=ids.length?await sb.from('field_notes').select('id,household_id,note_type,content,is_active,created_at').in('household_id',ids).eq('is_active',true).order('created_at',{ascending:false}):{data:[],error:null};if(notes.error)return notice(notes.error.message,'error');
+ let notesResult=ids.length?await sb.from('field_notes').select('id,household_id,note_type,content,is_active,created_at').in('household_id',ids).eq('is_active',true).order('created_at',{ascending:false}):{data:[],error:null};if(notesResult.error)return notice(notesResult.error.message,'error');let notes=notesResult.data||[];
  $('collabHouseholds').innerHTML=`<div class="card collab-card"><div class="topbar"><div><h3 style="margin:0">${esc(d.data.territories?.territory_no)} · ${esc(d.data.territories?.name)}</h3><div class="muted"><span class="live-dot"></span>실시간 동기화 · 같은 구역을 보는 봉사자와 공유됩니다.</div></div></div><div class="notice warning">⚠️ 한 세대의 상태가 다른 봉사자에 의해 바뀌면 최신 상태와 기록 시간이 표시됩니다.</div>${currentHouseholds.length?currentHouseholds.map(h=>{let x=sm.get(h.id),ns=notes.filter(n=>n.household_id===h.id);let warn=ns.filter(n=>n.is_active&&(n.note_type==='sister_caution'||n.note_type==='dog_caution'||n.note_type==='vehicle_inaccessible'));return`<div class="household-card" data-household="${h.id}"><div class="household-head"><div><strong>${esc(h.household_name||'방문 대상')}</strong><div class="household-meta">${esc(h.address||h.buildings?.building_name||'주소 없음')} · 순서 ${esc(h.visit_order||'')}</div></div><span class="status-pill ${statusClass(x?.status)}">${esc(statusLabel(x?.status||'not_visited'))}</span></div>${warn.length?`<div class="warning-box">${warn.map(n=>`⚠️ ${esc(n.note_type==='sister_caution'?'🔴 자매 방문 주의':n.note_type==='dog_caution'?'🐕 개 주의':'🚶 차량 접근 불가')}${n.content?` — ${esc(n.content)}`:''}`).join('<br>')}</div>`:''}<div class="mini-actions">${sbt('not_visited','미방문',x?.status||'not_visited')}${sbt('visited','방문',x?.status||'not_visited')}${sbt('absent','부재',x?.status||'not_visited')}${sbt('refused','방문 거절',x?.status||'not_visited')}</div>${x?.updated_at?`<div class="household-meta" style="margin-top:6px">마지막 변경: ${esc(x.profiles?.display_name||'봉사자')} · ${esc(date(x.updated_at))}</div>`:''}</div>`}).join(''):'<p class="muted">등록된 세대/방문 대상이 없습니다.</p>'}</div>`;
  document.querySelectorAll('#collabHouseholds .household-card .status-grid button, #collabHouseholds .household-card .mini-actions button').forEach(b=>b.onclick=()=>updateHouseholdStatus(b.closest('.household-card').dataset.household,b.dataset.status,dailyId));
 }
@@ -360,31 +360,19 @@ function legacyParseSheet(ws,sheetName,fileName){
   }
   return out;
 }
-function legacyTerritoryInfo(sheetName,mode='update'){
+function legacyTerritoryInfo(sheetName){
   const s=legacyClean(sheetName);
   const m=s.match(/^(.*?)[\s_-]*(\d{1,3}-\d{1,3})$/);
-  // 새 구역 모드에서는 시트명 전체를 구역명으로 보존합니다.
-  // 내부 territory_no만 기존 번호+이름 조합으로 자동 생성합니다.
-  if(mode==='new_territory') return m?{no:m[2],name:s}:{no:s,name:s};
   return m?{no:m[2],name:m[1].trim()||s}:{no:s,name:s};
 }
 function legacyPreviewHtml(items){
-  const rows=items.map(x=>`<tr><td>${esc(x.file_name)}</td><td><b>${esc(x.sheet_name)}</b><br><span class="muted">→ 새 구역: ${esc(x.territory.name)}</span></td><td>${x.rows.length}</td><td>${x.stats?.newCount??'-'}</td><td>${x.stats?.updateCount??'-'}</td><td>${x.stats?.deleteCount??'-'}</td><td>${x.stats?.unchanged??'-'}</td></tr>`).join('');
-  return `<div class="notice success">총 <b>${items.length}</b>개 시트, <b>${items.reduce((a,x)=>a+x.rows.length,0)}</b>개 원본 행을 읽었습니다.</div><div style="overflow:auto"><table><thead><tr><th>파일</th><th>시트/구역 → 새 구역</th><th>행</th><th>신규</th><th>수정</th><th>삭제(D)</th><th>변경 없음</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const rows=items.map(x=>`<tr><td>${esc(x.file_name)}</td><td>${esc(x.sheet_name)}</td><td>${x.rows.length}</td><td>${x.stats?.newCount??'-'}</td><td>${x.stats?.updateCount??'-'}</td><td>${x.stats?.deleteCount??'-'}</td><td>${x.stats?.unchanged??'-'}</td></tr>`).join('');
+  return `<div class="notice success">총 <b>${items.length}</b>개 시트, <b>${items.reduce((a,x)=>a+x.rows.length,0)}</b>개 원본 행을 읽었습니다.</div><div style="overflow:auto"><table><thead><tr><th>파일</th><th>시트/구역</th><th>행</th><th>신규</th><th>수정</th><th>삭제(D)</th><th>변경 없음</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 async function getExistingImportStats(items){
-  const mode=$('legacyImportMode').value;
-  const t=await sb.from('territories').select('id,territory_no,name,archived_at'); if(t.error)throw t.error;
+  const t=await sb.from('territories').select('id,territory_no,name'); if(t.error)throw t.error;
   const tm=new Map((t.data||[]).map(x=>[x.territory_no,x]));
   for(const sheet of items){
-    if(mode==='new_territory'){
-      sheet.existingTerritory=null;
-      sheet.conflict=null;
-      let newCount=0,deleteCount=0;
-      for(const r of sheet.rows){if(r.action==='D')deleteCount++;else newCount++;}
-      sheet.stats={newCount,updateCount:0,deleteCount,unchanged:0};
-      continue;
-    }
     const existing=tm.get(sheet.territory.no); sheet.existingTerritory=existing||null;
     if(existing && legacyNorm(existing.name)!==legacyNorm(sheet.territory.name)){
       sheet.conflict=`구역 번호 ${sheet.territory.no}가 이미 '${existing.name}'으로 등록되어 있어 Excel '${sheet.territory.name}'와 충돌합니다.`; continue;
@@ -418,31 +406,17 @@ async function previewLegacy(){
       for(const sheetName of wb.SheetNames){
         const ws=wb.Sheets[sheetName];
         const rows=legacyParseSheet(ws,sheetName,file.name);
-        if(rows.length) all.push({file_name:file.name,sheet_name:sheetName,rows,territory:legacyTerritoryInfo(sheetName,$('legacyImportMode').value)});
+        if(rows.length) all.push({file_name:file.name,sheet_name:sheetName,rows,territory:legacyTerritoryInfo(sheetName)});
       }
     }
     window._legacyWorkbookData=await getExistingImportStats(all);
     const conflicts=window._legacyWorkbookData.filter(x=>x.conflict);
-    const newModeNote=$('legacyImportMode').value==='new_territory'?'<div class="notice success"><b>새 구역 모드:</b> 각 Excel 시트명을 구역명으로 사용하고, 기존 구역번호와 충돌하지 않도록 내부 구역번호를 자동 생성합니다.</div>':'';
-    $('legacyPreview').innerHTML=legacyPreviewHtml(window._legacyWorkbookData)+newModeNote+(conflicts.length?`<div class="notice error"><b>구역 번호 충돌 ${conflicts.length}건</b><br>${conflicts.map(x=>esc(x.conflict)).join('<br>')}</div>`:'')+'<div class="notice">📌 현재 파일은 <b>브라우저에서 분석만 완료된 상태</b>입니다. 실제 DB에 반영하려면 아래 <b>변경사항 적용 / Excel 가져오기</b> 버튼을 눌러야 합니다.<br>신규·수정이 0건이고 ‘변경 없음’만 있다면 DB 목록이 바뀌지 않는 것이 정상입니다.</div><div class="notice">업데이트는 세대/건물 기본정보만 수정합니다. 방문 상태·방문 이력·방문 거절 이력·현장 특이사항은 삭제하지 않습니다.</div>';
+    $('legacyPreview').innerHTML=legacyPreviewHtml(window._legacyWorkbookData)+(conflicts.length?`<div class="notice error"><b>구역 번호 충돌 ${conflicts.length}건</b><br>${conflicts.map(x=>esc(x.conflict)).join('<br>')}</div>`:'')+'<div class="notice">📌 현재 파일은 <b>브라우저에서 분석만 완료된 상태</b>입니다. 실제 DB에 반영하려면 아래 <b>변경사항 적용 / Excel 가져오기</b> 버튼을 눌러야 합니다.<br>신규·수정이 0건이고 ‘변경 없음’만 있다면 DB 목록이 바뀌지 않는 것이 정상입니다.</div><div class="notice">업데이트는 세대/건물 기본정보만 수정합니다. 방문 상태·방문 이력·방문 거절 이력·현장 특이사항은 삭제하지 않습니다.</div>';
     $('legacyPreview').classList.remove('hidden'); $('runLegacyImportBtn').disabled=!all.length||conflicts.length>0;
     $('legacyImportResult').innerHTML=''; notice(`Excel 분석 완료: ${all.length}개 시트를 확인했습니다.`,'success');
   }catch(e){console.error(e);notice('Excel 분석 중 오류: '+e.message,'error')}
 }
-function legacyNewTerritoryNo(info){
-  const base=legacyClean(info.no)||'EXCEL';
-  const slug=legacyClean(info.name).replace(/[^0-9A-Za-z가-힣]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'SHEET';
-  return `${base}-${slug}`;
-}
-async function legacyGetTerritory(info,mode='update'){
-  if(mode==='new_territory'){
-    const newNo=legacyNewTerritoryNo(info);
-    let q=await sb.from('territories').select('id,territory_no,name,archived_at').eq('territory_no',newNo).maybeSingle();
-    if(q.error)return {error:q.error};
-    if(q.data)return {error:new Error(`새 구역 번호 '${newNo}'가 이미 존재합니다. 같은 파일을 다시 새 구역으로 가져오려면 기존 새 구역을 사용하거나 먼저 다른 이름의 시트를 사용하세요.`),conflict:true,existing:q.data,requested:info};
-    let r=await sb.from('territories').insert({territory_no:newNo,name:info.name,description:`Excel 새 구역 이관 · 원본 시트: ${info.name}`,created_by:user.id}).select('id,territory_no,name').single();
-    return {data:r.data,created:true,error:r.error};
-  }
+async function legacyGetTerritory(info){
   let q=await sb.from('territories').select('id,territory_no,name,archived_at').eq('territory_no',info.no).maybeSingle();
   if(q.error)return {error:q.error};
   if(q.data){if(q.data.archived_at)return {error:new Error(`구역 번호 ${info.no}는 보관된 구역 '${q.data.name}'로 이미 존재합니다. 먼저 복원하거나 다른 구역 번호를 사용하세요.`),conflict:true,existing:q.data,requested:info};const same=legacyNorm(q.data.name)===legacyNorm(info.name);if(!same)return {error:new Error(`구역 번호 충돌: Excel '${info.no} · ${info.name}'와 기존 '${q.data.territory_no} · ${q.data.name}'의 이름이 다릅니다. 자동 병합하지 않았습니다.`),conflict:true,existing:q.data,requested:info};return {data:q.data,created:false};}
@@ -451,7 +425,7 @@ async function legacyGetTerritory(info,mode='update'){
 }
 function legacyBuildingType(rows){const numeric=rows.filter(r=>/^\s*\d{2,4}(?:호)?\s*$/.test(legacyClean(r.name_ho))).length;const floors=rows.filter(r=>legacyClean(r.floor)).length;if(numeric>=2&&floors>=2)return 'apartment';if(rows.some(r=>legacyClean(r.name_ho).includes('펜션')))return 'commercial';return 'other';}
 async function legacyImportSheet(sheet,batchId){
-  const tr=await legacyGetTerritory(sheet.territory,$('legacyImportMode').value);if(tr.error)throw tr.error;const tid=tr.data.id;if($('legacyImportMode').value==='new_territory'){sheet.territory={no:tr.data.territory_no,name:tr.data.name};}
+  const tr=await legacyGetTerritory(sheet.territory);if(tr.error)throw tr.error;const tid=tr.data.id;
   const existingB=await sb.from('buildings').select('id,territory_id,legacy_key,building_name,address,building_type,description,latitude,longitude').eq('territory_id',tid);if(existingB.error)throw existingB.error;
   const existingE=await sb.from('building_entrances').select('id,building_id,legacy_key,entrance_name,entrance_order,description').in('building_id',(existingB.data||[]).map(x=>x.id).length?(existingB.data||[]).map(x=>x.id):['00000000-0000-0000-0000-000000000000']);
   if(existingE.error)throw existingE.error;
@@ -495,13 +469,13 @@ async function runLegacyImport(){
     return notice(`변경할 데이터가 없습니다. 전체 ${totalStats.same}건이 기존 데이터와 동일합니다. 목록이 바뀌지 않는 것이 정상입니다.`,'success');
   }
   if(!confirm(`Excel 변경사항을 실제 DB에 반영하시겠습니까?\n\n신규 ${totalStats.n}건 · 수정 ${totalStats.u}건 · D ${totalStats.d}건\n변경 없음 ${totalStats.same}건\n\n방문 이력과 특이사항은 삭제하지 않습니다.`))return;
-  if($('legacyImportMode').value!=='new_territory' && sheets.some(x=>x.conflict))return notice('구역 번호 충돌이 있어 먼저 확인해야 합니다.','error');
+  if(sheets.some(x=>x.conflict))return notice('구역 번호 충돌이 있어 먼저 확인해야 합니다.','error');
   $('runLegacyImportBtn').disabled=true;$('legacyImportResult').innerHTML='<div class="notice">가져오는 중입니다. 수정본은 기존 방문 기록을 건드리지 않습니다.</div>';
   try{
     let totalRows=0,totalAdded=0,totalUpdated=0,totalSkipped=0,totalDeleted=0;const results=[];
     for(const s of sheets){const b=await sb.from('legacy_import_batches').insert({file_name:s.file_name,sheet_count:1,row_count:s.rows.length,created_by:user.id}).select('id').single();if(b.error)throw b.error;const x=await legacyImportSheet(s,b.data.id);results.push(x);totalRows+=x.rows;totalAdded+=x.added;totalUpdated+=x.updated;totalSkipped+=x.skipped;totalDeleted+=x.deleted;await sb.from('legacy_import_batches').update({sheet_count:1,row_count:x.rows,imported_count:x.imported,skipped_count:x.skipped}).eq('id',b.data.id)}
     $('legacyImportResult').innerHTML=`<div class="notice success"><b>Excel 반영 완료</b><br>원본 행 ${totalRows}건 · 신규 ${totalAdded}건 · 수정 ${totalUpdated}건 · 변경 없음 ${totalSkipped}건 · D(삭제) ${totalDeleted}건<br><small>방문 상태/방문 이력/방문 거절/특이사항은 삭제하지 않았습니다.</small></div><table><thead><tr><th>구역</th><th>행</th><th>신규</th><th>수정</th><th>변경 없음</th><th>D</th></tr></thead><tbody>${results.map(x=>`<tr><td>${esc(x.territory.no)} · ${esc(x.territory.name)}</td><td>${x.rows}</td><td>${x.added}</td><td>${x.updated}</td><td>${x.skipped}</td><td>${x.deleted}</td></tr>`).join('')}</tbody></table>`;
-    notice('Excel 수정본을 안전하게 반영했습니다. 주소 좌표를 자동으로 확인합니다.','success');await admin();await loadStructure();await loadMapTerritoryOptions();try{await ensureNaverApi();for(const s of results){const tr=await sb.from('territories').select('id').eq('territory_no',s.territory.no).maybeSingle();if(tr.data)await geocodeMissingBuildings(tr.data.id)}}catch(ge){console.warn('자동 좌표 생성 생략:',ge.message)}
+    notice('Excel 수정본을 안전하게 반영했습니다. 주소 좌표를 자동으로 확인합니다.','success');await admin();await loadStructure();await loadMapTerritoryOptions();try{await ensureNaverApi();for(const s of sheets){const tr=await sb.from('territories').select('id').eq('territory_no',s.territory.no).maybeSingle();if(tr.data)await geocodeMissingBuildings(tr.data.id)}}catch(ge){console.warn('자동 좌표 생성 생략:',ge.message)}
   }catch(e){console.error(e);$('legacyImportResult').innerHTML=`<div class="notice error">반영 중 오류: ${esc(e.message||e)}</div>`;notice('Excel 반영 중 오류가 발생했습니다.','error')}
   finally{$('runLegacyImportBtn').disabled=false}
 }
